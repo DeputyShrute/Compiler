@@ -49,7 +49,10 @@ extern int yydebug;
     BRACKET = 259,
     INT = 260,
     FLOAT = 261,
-    STRING = 262
+    STRING = 262,
+    ASSIGN = 263,
+    EQUALTO = 264,
+    DECLAREVAR = 265
   };
 #endif
 
@@ -65,9 +68,13 @@ union YYSTYPE
   int ival;
   float fval;
   char *sval;
+  char* aval;
+  char *etval;
+  char* dval;
+
   
 
-#line 71 "snazzle.tab.h" /* yacc.c:1909  */
+#line 78 "snazzle.tab.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;

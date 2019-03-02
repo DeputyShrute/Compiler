@@ -7,10 +7,13 @@
 %%
 [ \t\n]           ;
 ['main', 'for', 'return', 'print']+        { yylval.mval = strdup(yytext); return FUNCTION;}
-[0-9]+\.[0-9]+    { yylval.fval = atof(yytext); return FLOAT; }
+['==']+		{yylval.etval = strdup(yytext); return EQUALTO;}
+['var']+\[a-z]+ { yylval.dval = strdup(yytext); return DECLAREVAR;}
 [0-9]+            { yylval.ival = atoi(yytext); return INT; }
+['"', '(', ')', '{', '}']+    { yylval.gval = strdup(yytext); return BRACKET;}
+[':=']+		{yylval.aval = strdup(yytext); return ASSIGN;}
 [a-zA-Z0-9]+      { yylval.sval = strdup(yytext); return STRING;}
-['"', '(', ')', '{', '}']      { yylval.gval = strdup(yytext); return BRACKET;}
+
 
 %%
 
@@ -20,4 +23,5 @@
   // free() above in the Bison section.  (Aside: we use free() instead of
   // delete because strdup is a C function that uses malloc, not a C++
   // function that uses new.)
+
 
