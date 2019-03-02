@@ -26,8 +26,10 @@
   float fval;
   char *sval;
   char* aval;
-  char *etval;
+  char *con;
   char* dval;
+  char* arith;
+  char* tar;
 
   
 }
@@ -40,8 +42,10 @@
 %token <fval> FLOAT
 %token <sval> STRING
 %token <aval> ASSIGN
-%token <etval> EQUALTO
+%token <con> CONDITIONAL
 %token <dval> DECLAREVAR
+%token <arith> ARITHMETIC
+%token <tar> TARGET
 
 
 
@@ -60,6 +64,9 @@ snazzle:
   | DECLAREVAR snazzle {
     cout << "Bison found a a decleration: " << $1 << endl; free($1);
     }    
+  | TARGET snazzle {
+    cout << "Bison found a a target : " << $1 << endl; free($1);
+    } 
   | INT snazzle      {
       cout << "bison found an int: " << $1 << endl;
     }
@@ -72,10 +79,12 @@ snazzle:
   | ASSIGN snazzle {
       cout << "bison found a assignment op: " << $1 << endl; free($1);
     }
-  | EQUALTO snazzle {
-      cout << "bison found a Equal to: " << $1 << endl; free($1);
+  | CONDITIONAL snazzle {
+      cout << "bison found a CONDITIONAL op: " << $1 << endl; free($1);
     }
- 
+  | ARITHMETIC snazzle {
+      cout << "bison found a ARITHMETIC: " << $1 << endl; free($1);
+    } 
  
   | FUNCTION       {
     cout << "bison found a function: " << $1 << endl; free($1);
@@ -83,10 +92,12 @@ snazzle:
    | BRACKET       {
     cout << "Bison found a bracket: " << $1 << endl; free($1);
     }  
+  | TARGET       {
+    cout << "Bison found a TARGET: " << $1 << endl; free($1);
+    } 
   | DECLAREVAR            {
       cout << "Bison found a a decleration: " << $1 << endl; free($1);
     }  
-
   | INT            {
       cout << "bison found an int: " << $1 << endl;
     }
@@ -99,8 +110,11 @@ snazzle:
   | ASSIGN         {
       cout << "bison found a Assignment : " << $1 << endl; free($1);
     }  
-  | EQUALTO         {
-      cout << "bison found a equal to: " << $1 << endl; free($1);
+  | CONDITIONAL         {
+      cout << "bison found a CONDITIONAL op: " << $1 << endl; free($1);
+    }
+   | ARITHMETIC     {
+      cout << "bison found a an ARITHMETIC: " << $1 << endl; free($1);
     }
 
   ;

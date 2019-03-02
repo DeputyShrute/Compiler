@@ -1,19 +1,20 @@
 %{
   #include <cstdio>
-
+  #include <string.h>
   #include "snazzle.tab.h"  // to get the token types from Bison
 
 %}
 %%
 [ \t\n]           ;
 ['main', 'for', 'return', 'print']+        { yylval.mval = strdup(yytext); return FUNCTION;}
-['==']+		{yylval.etval = strdup(yytext); return EQUALTO;}
-['var']+\[a-z]+ { yylval.dval = strdup(yytext); return DECLAREVAR;}
+['=','>','<','<=','>=','<']+		{yylval.con = strdup(yytext); return CONDITIONAL;}
+['var']+\ [a-z]+  { yylval.dval = strdup(yytext); return DECLAREVAR;}
+[a-z]+\ [':=']+ { yylval.tar = strdup(yytext); return TARGET;}
 [0-9]+            { yylval.ival = atoi(yytext); return INT; }
 ['"', '(', ')', '{', '}']+    { yylval.gval = strdup(yytext); return BRACKET;}
 [':=']+		{yylval.aval = strdup(yytext); return ASSIGN;}
 [a-zA-Z0-9]+      { yylval.sval = strdup(yytext); return STRING;}
-
+['+','/','*','-']+ { yylval.arith = strdup(yytext); return ARITHMETIC;}
 
 %%
 

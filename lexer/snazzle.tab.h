@@ -51,8 +51,10 @@ extern int yydebug;
     FLOAT = 261,
     STRING = 262,
     ASSIGN = 263,
-    EQUALTO = 264,
-    DECLAREVAR = 265
+    CONDITIONAL = 264,
+    DECLAREVAR = 265,
+    ARITHMETIC = 266,
+    TARGET = 267
   };
 #endif
 
@@ -69,12 +71,14 @@ union YYSTYPE
   float fval;
   char *sval;
   char* aval;
-  char *etval;
+  char *con;
   char* dval;
+  char* arith;
+  char* tar;
 
   
 
-#line 78 "snazzle.tab.h" /* yacc.c:1909  */
+#line 82 "snazzle.tab.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;
