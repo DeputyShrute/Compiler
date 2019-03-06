@@ -2,6 +2,12 @@ main
 print ("Hello World")
 :=
 var a
+var b
 ==
+b := a + 1
+>
+<
+>=
+<=
 
 return

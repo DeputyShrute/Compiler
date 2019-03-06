@@ -30,6 +30,10 @@
   char* dval;
   char* arith;
   char* tar;
+  char* endval;
+  char* incr;
+  char* decr;
+  char* qval;
 
   
 }
@@ -46,6 +50,10 @@
 %token <dval> DECLAREVAR
 %token <arith> ARITHMETIC
 %token <tar> TARGET
+%token <endval> END
+%token <incr> INCREMENT
+%token <decr> DECREMENT
+%token <qval> QUOTELITERAL
 
 
 
@@ -63,7 +71,19 @@ snazzle:
     }
   | DECLAREVAR snazzle {
     cout << "Bison found a a decleration: " << $1 << endl; free($1);
-    }    
+    }   
+  | QUOTELITERAL snazzle {
+    cout << "Bison found a a QUOTELITERAL: " << $1 << endl; free($1);
+    }   
+   | INCREMENT snazzle {
+    cout << "Bison found a a INCREMENT: " << $1 << endl; free($1);
+    }  
+  | DECREMENT snazzle {
+    cout << "Bison found a a DECREMENT: " << $1 << endl; free($1);
+    }
+  | END snazzle {
+    cout << "Bison found a a end: " << $1 << endl; free($1);
+    }
   | TARGET snazzle {
     cout << "Bison found a a target : " << $1 << endl; free($1);
     } 
@@ -96,10 +116,23 @@ snazzle:
     cout << "Bison found a TARGET: " << $1 << endl; free($1);
     } 
   | DECLAREVAR            {
+      //Check for repeating vars.
       cout << "Bison found a a decleration: " << $1 << endl; free($1);
     }  
   | INT            {
       cout << "bison found an int: " << $1 << endl;
+    }
+  | QUOTELITERAL  {
+    cout << "Bison found a a QUOTELITERAL: " << $1 << endl; free($1);
+    }   
+  | INCREMENT  {
+    cout << "Bison found a a INCREMENT: " << $1 << endl; free($1);
+    }   
+  | DECREMENT  {
+    cout << "Bison found a a DECREMENT: " << $1 << endl; free($1);
+    }
+  | END  {
+    cout << "Bison found a a DECREMENT: " << $1 << endl; free($1);
     }
   | FLOAT          {
       cout << "bison found a float: " << $1 << endl;
