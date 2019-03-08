@@ -54,7 +54,11 @@ extern int yydebug;
     CONDITIONAL = 264,
     DECLAREVAR = 265,
     ARITHMETIC = 266,
-    TARGET = 267
+    TARGET = 267,
+    END = 268,
+    INCREMENT = 269,
+    DECREMENT = 270,
+    QUOTELITERAL = 271
   };
 #endif
 
@@ -75,10 +79,14 @@ union YYSTYPE
   char* dval;
   char* arith;
   char* tar;
+  char* endval;
+  char* incr;
+  char* decr;
+  char* qval;
 
   
 
-#line 82 "snazzle.tab.h" /* yacc.c:1909  */
+#line 90 "snazzle.tab.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;

@@ -6,23 +6,20 @@
 %}
 %%
 [ \t\n]           ;
-['main', 'for', 'return', 'print']+        { yylval.mval = strdup(yytext); return FUNCTION;}
-['=','>','<','<=','>=','<']+		{yylval.con = strdup(yytext); return CONDITIONAL;}
+['for', 'print']+        { yylval.mval = strdup(yytext); return FUNCTION;}
+['=','>','<','<=','>=']+		{yylval.con = strdup(yytext); return CONDITIONAL;}
 ['var']+\ [a-z]+  { yylval.dval = strdup(yytext); return DECLAREVAR;}
 [a-z]+\ [':=']+ { yylval.tar = strdup(yytext); return TARGET;}
-[0-9]+            { yylval.ival = atoi(yytext); return INT; }
-['"', '(', ')', '{', '}']+    { yylval.gval = strdup(yytext); return BRACKET;}
+[a-z]+\ ['inc']+ { yylval.incr = strdup(yytext); return INCREMENT;}
+[a-z]+\ ['dec']+ { yylval.decr = strdup(yytext); return DECREMENT;}
+[0-9]+          { yylval.ival = atoi(yytext); return INT; }
+['(', ')', '{', '}']+    { yylval.gval = strdup(yytext); return BRACKET;}
+['"']+  { yylval.qval = strdup(yytext); return QUOTELITERAL;}
 [':=']+		{yylval.aval = strdup(yytext); return ASSIGN;}
 [a-zA-Z0-9]+      { yylval.sval = strdup(yytext); return STRING;}
-['+','/','*','-']+ { yylval.arith = strdup(yytext); return ARITHMETIC;}
-
+['+','/','*']+ { yylval.arith = strdup(yytext); return ARITHMETIC;}
+[-]+ { yylval.arith = strdup(yytext); return ARITHMETIC;}
+[;]+ { yylval.endval = strdup(yytext); return END;}
 %%
-
-
- // We have to strdup yytext because Flex will change it for the next token.
-  // Note that this memory must be freed somewhere, so that's why we call
-  // free() above in the Bison section.  (Aside: we use free() instead of
-  // delete because strdup is a C function that uses malloc, not a C++
-  // function that uses new.)
 
 

@@ -1,13 +1,8 @@
-main
-print ("Hello World")
-:=
-var a
-var b
-==
-b := a + 1
->
-<
->=
-<=
+for (var x := 0; x < 10; x inc;)
+{
+	var steve;
+	print("i want to kms");
+	x - b;
+	1 + 2;
+}
 
-return
