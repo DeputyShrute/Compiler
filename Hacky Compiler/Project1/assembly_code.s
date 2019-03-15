@@ -54,16 +54,21 @@ z:
 .long 0
 .globl _start
 _start:
-addl $8, c
-movl c, %ebx
-movl $5, %eax
-movl $0, %ecx
+addl $2, x
 movl x, %ebx
+movl $0, %ecx
 loop_start:
-cmpl $3, %ecx
-je end_loop
-addl %eax, %ebx
 addl $1, %ecx
+cmpl $4, %ecx
+je end_loop
+addl $2, x
+movl x, %ebx
+movl %ebx, x
+movl x, %ebx
+subl $1, x
+movl x, %ebx
+movl %ebx, x
+movl x, %ebx
 jmp loop_start
 end_loop:
 movl $1, %eax
