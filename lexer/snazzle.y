@@ -1,7 +1,9 @@
-%{
+  %{
   #include <cstdio>
   #include <iostream>
   using namespace std;
+
+
 
   // Declare stuff from Flex that Bison needs to know about:
   extern int yylex();
@@ -11,149 +13,131 @@
   void yyerror(const char *s);
 %}
 
-// Bison fundamentally works by asking flex to get the next token, which it
-// returns as an object of type "yystype".  Initially (by default), yystype
-// is merely a typedef of "int", but for non-trivial projects, tokens could
-// be of any arbitrary data type.  So, to deal with that, the idea is to
-// override yystype's default typedef to be a C union instead.  Unions can
-// hold all of the types of tokens that Flex could return, and this this means
-// we can return ints or floats or strings cleanly.  Bison implements this
-// mechanism with the %union directive:
-%union {
-  char *mval;
-  char *gval;
-  int ival;
-  float fval;
-  char *sval;
-  char* aval;
-  char *con;
-  char* dval;
-  char* arith;
-  char* tar;
-  char* endval;
-  char* incr;
-  char* decr;
-  char* qval;
 
+%union {
+  char* func;
+
+  char* loop;
+
+  char* EQ;
+  char* GT;
+  char* LT;
+  char* GT_EQ;
+  char* LT_EQ;
+
+  char* var_dec;
+  char* var_name;
+
+  char* increment;
+  char* decrement;
   
+  int integer;
+
+  char* open_round;
+  char* close_round;
+  char* open_curly;
+  char* close_curly;
+
+  char* speech_mark;
+  char* assignment;
+  char* string;
+
+  char* plus;
+  char* minus;
+  char* divide;
+  char* times;
+
+
+  char* semi_colon;
 }
 
-// Define the "terminal symbol" token types I'm going to use (in CAPS
-// by convention), and associate each with a field of the %union:
-%token <mval> FUNCTION
-%token <gval> BRACKET
-%token <ival> INT
-%token <fval> FLOAT
-%token <sval> STRING
-%token <aval> ASSIGN
-%token <con> CONDITIONAL
-%token <dval> DECLAREVAR
-%token <arith> ARITHMETIC
-%token <tar> TARGET
-%token <endval> END
-%token <incr> INCREMENT
-%token <decr> DECREMENT
-%token <qval> QUOTELITERAL
 
+// The lower the rule, the higher the precedence
+// Specify the tokens and precedence
 
+%token <func> FUNCTION
+
+%token <loop> LOOP
+
+ 
+%token <EQ> EQ
+%token <GT> GT
+%token <LT> LT
+%token <GT_EQ> GT_EQ
+%token <LT_EQ> LT_EQ
+
+%token <var_dec> VAR_DECLARATION
+%token <var_name> IDENTIFIER
+
+%token <increment> INCREMENT
+%token <decrement> DECREMENT
+
+%token <integer> INTEGER
+
+%token <open_round> OPEN_ROUND
+%token <close_round> CLOSE_ROUND
+%token <open_curly> OPEN_CURLY
+%token <close_curly> CLOSE_CURLY
+
+%token <speech_mark> SPEECH_MARK
+%token <assignment> ASSIGNMENT
+%token <string> STRING
+
+%token <plus> PLUS
+%token <minus> MINUS
+%token <divide> DIVIDE
+%token <times> TIMES
+
+%token <semi_colon> SEMI_COLON
+
+%left '*' '/'
+%left '+' '-'
+%left '<' "<=" '>' ">="
+%right "++" "--"
+%left '='
 
 
 %%
-// This is the actual grammar that bison will parse, but for right now it's just
-// something silly to echo to the screen what bison gets from flex.  We'll
-// make a real one shortly:
-snazzle:
-    FUNCTION snazzle {
-    cout << "bison found a function: " << $1 << endl; free($1);
-    }
-  | BRACKET snazzle {
-    cout << "Bison found a bracket: " << $1 << endl; free($1);
-    }
-  | DECLAREVAR snazzle {
-    cout << "Bison found a a decleration: " << $1 << endl; free($1);
-    }   
-  | QUOTELITERAL snazzle {
-    cout << "Bison found a a QUOTELITERAL: " << $1 << endl; free($1);
-    }   
-   | INCREMENT snazzle {
-    cout << "Bison found a a INCREMENT: " << $1 << endl; free($1);
-    }  
-  | DECREMENT snazzle {
-    cout << "Bison found a a DECREMENT: " << $1 << endl; free($1);
-    }
-  | END snazzle {
-    cout << "Bison found a a end: " << $1 << endl; free($1);
-    }
-  | TARGET snazzle {
-    cout << "Bison found a a target : " << $1 << endl; free($1);
-    } 
-  | INT snazzle      {
-      cout << "bison found an int: " << $1 << endl;
-    }
-  | FLOAT snazzle  {
-      cout << "bison found a float: " << $1 << endl;
-    }
-  | STRING snazzle {
-      cout << "bison found a string: " << $1 << endl; free($1);
-    }
-  | ASSIGN snazzle {
-      cout << "bison found a assignment op: " << $1 << endl; free($1);
-    }
-  | CONDITIONAL snazzle {
-      cout << "bison found a CONDITIONAL op: " << $1 << endl; free($1);
-    }
-  | ARITHMETIC snazzle {
-      cout << "bison found a ARITHMETIC: " << $1 << endl; free($1);
-    } 
- 
-  | FUNCTION       {
-    cout << "bison found a function: " << $1 << endl; free($1);
-    } 
-   | BRACKET       {
-    cout << "Bison found a bracket: " << $1 << endl; free($1);
-    }  
-  | TARGET       {
-    cout << "Bison found a TARGET: " << $1 << endl; free($1);
-    } 
-  | DECLAREVAR            {
-      //Check for repeating vars.
-      cout << "Bison found a a decleration: " << $1 << endl; free($1);
-    }  
-  | INT            {
-      cout << "bison found an int: " << $1 << endl;
-    }
-  | QUOTELITERAL  {
-    cout << "Bison found a a QUOTELITERAL: " << $1 << endl; free($1);
-    }   
-  | INCREMENT  {
-    cout << "Bison found a a INCREMENT: " << $1 << endl; free($1);
-    }   
-  | DECREMENT  {
-    cout << "Bison found a a DECREMENT: " << $1 << endl; free($1);
-    }
-  | END  {
-    cout << "Bison found a a DECREMENT: " << $1 << endl; free($1);
-    }
-  | FLOAT          {
-      cout << "bison found a float: " << $1 << endl;
-    }
-  | STRING         {
-      cout << "bison found a string: " << $1 << endl; free($1);
-    }
-  | ASSIGN         {
-      cout << "bison found a Assignment : " << $1 << endl; free($1);
-    }  
-  | CONDITIONAL         {
-      cout << "bison found a CONDITIONAL op: " << $1 << endl; free($1);
-    }
-   | ARITHMETIC     {
-      cout << "bison found a an ARITHMETIC: " << $1 << endl; free($1);
-    }
 
-  ;
+// bison tutorial : http://www.eecg.toronto.edu/~jzhu/csc467/readings/csc467-bison-tut.pdf
+// Copy of the duude in the compiler vid https://www.youtube.com/watch?v=eF9qWbuQLuw
+
+stmt:                     compound_stmt '}'
+                        | "for" '(' expr ')' stmt
+                        | variable_definition ';'
+                        | expr ';'
+                        | ';'
+                        ;
+
+compound_stmt:            '{'
+                        | compound_stmt stmt
+                        ;
+
+variable_definition:      "var" IDENTIFIER ":=" expr
+                        ;
+
+expr:                     INTEGER
+                        | STRING
+                        | IDENTIFIER
+                        | '(' expr ')'
+                        | expr '=' expr {cout <<"1" << endl; }
+                        | expr '+' expr
+                        | expr '-' expr  
+                        | expr '*' expr
+                        | expr '/' expr
+                        | expr "++" 
+                        | expr "--"   
+                        | expr '<' expr
+                        | expr "<=" expr
+                        | expr '>' expr
+                        | expr ">=" expr
+                        ;  
 %%
 
 int main(int, char**) {
+  //#ifdef YYDEBUG
+  //yydebug = 1;
+  //#endif
   // Open a file handle to a particular file:
   FILE *myfile = fopen("a.snazzle.file", "r");
   // Make sure it is valid:
@@ -170,8 +154,10 @@ int main(int, char**) {
 }
 
 void yyerror(const char *s) {
+
+  fprinf (stderr, "%s\n", s);
+  
   cout << "EEK, parse error!  Message: " << s << endl;
   // might as well halt now:
   exit(-1);
 }
-

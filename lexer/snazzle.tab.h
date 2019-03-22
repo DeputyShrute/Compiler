@@ -46,19 +46,29 @@ extern int yydebug;
   enum yytokentype
   {
     FUNCTION = 258,
-    BRACKET = 259,
-    INT = 260,
-    FLOAT = 261,
-    STRING = 262,
-    ASSIGN = 263,
-    CONDITIONAL = 264,
-    DECLAREVAR = 265,
-    ARITHMETIC = 266,
-    TARGET = 267,
-    END = 268,
-    INCREMENT = 269,
-    DECREMENT = 270,
-    QUOTELITERAL = 271
+    LOOP = 259,
+    EQ = 260,
+    GT = 261,
+    LT = 262,
+    GT_EQ = 263,
+    LT_EQ = 264,
+    VAR_DECLARATION = 265,
+    IDENTIFIER = 266,
+    INCREMENT = 267,
+    DECREMENT = 268,
+    INTEGER = 269,
+    OPEN_ROUND = 270,
+    CLOSE_ROUND = 271,
+    OPEN_CURLY = 272,
+    CLOSE_CURLY = 273,
+    SPEECH_MARK = 274,
+    ASSIGNMENT = 275,
+    STRING = 276,
+    PLUS = 277,
+    MINUS = 278,
+    DIVIDE = 279,
+    TIMES = 280,
+    SEMI_COLON = 281
   };
 #endif
 
@@ -67,26 +77,44 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 22 "snazzle.y" /* yacc.c:1909  */
+#line 17 "snazzle.y" /* yacc.c:1909  */
 
-  char *mval;
-  char *gval;
-  int ival;
-  float fval;
-  char *sval;
-  char* aval;
-  char *con;
-  char* dval;
-  char* arith;
-  char* tar;
-  char* endval;
-  char* incr;
-  char* decr;
-  char* qval;
+  char* func;
 
+  char* loop;
+
+  char* EQ;
+  char* GT;
+  char* LT;
+  char* GT_EQ;
+  char* LT_EQ;
+
+  char* var_dec;
+  char* var_name;
+
+  char* increment;
+  char* decrement;
   
+  int integer;
 
-#line 90 "snazzle.tab.h" /* yacc.c:1909  */
+  char* open_round;
+  char* close_round;
+  char* open_curly;
+  char* close_curly;
+
+  char* speech_mark;
+  char* assignment;
+  char* string;
+
+  char* plus;
+  char* minus;
+  char* divide;
+  char* times;
+
+
+  char* semi_colon;
+
+#line 118 "snazzle.tab.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;

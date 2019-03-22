@@ -68,6 +68,8 @@
   #include <iostream>
   using namespace std;
 
+
+
   // Declare stuff from Flex that Bison needs to know about:
   extern int yylex();
   extern int yyparse();
@@ -75,7 +77,7 @@
  
   void yyerror(const char *s);
 
-#line 79 "snazzle.tab.c" /* yacc.c:339  */
+#line 81 "snazzle.tab.c" /* yacc.c:339  */
 
 # ifndef YY_NULLPTR
 #  if defined __cplusplus && 201103L <= __cplusplus
@@ -111,19 +113,29 @@ extern int yydebug;
   enum yytokentype
   {
     FUNCTION = 258,
-    BRACKET = 259,
-    INT = 260,
-    FLOAT = 261,
-    STRING = 262,
-    ASSIGN = 263,
-    CONDITIONAL = 264,
-    DECLAREVAR = 265,
-    ARITHMETIC = 266,
-    TARGET = 267,
-    END = 268,
-    INCREMENT = 269,
-    DECREMENT = 270,
-    QUOTELITERAL = 271
+    LOOP = 259,
+    EQ = 260,
+    GT = 261,
+    LT = 262,
+    GT_EQ = 263,
+    LT_EQ = 264,
+    VAR_DECLARATION = 265,
+    IDENTIFIER = 266,
+    INCREMENT = 267,
+    DECREMENT = 268,
+    INTEGER = 269,
+    OPEN_ROUND = 270,
+    CLOSE_ROUND = 271,
+    OPEN_CURLY = 272,
+    CLOSE_CURLY = 273,
+    SPEECH_MARK = 274,
+    ASSIGNMENT = 275,
+    STRING = 276,
+    PLUS = 277,
+    MINUS = 278,
+    DIVIDE = 279,
+    TIMES = 280,
+    SEMI_COLON = 281
   };
 #endif
 
@@ -132,26 +144,44 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 22 "snazzle.y" /* yacc.c:355  */
+#line 17 "snazzle.y" /* yacc.c:355  */
 
-  char *mval;
-  char *gval;
-  int ival;
-  float fval;
-  char *sval;
-  char* aval;
-  char *con;
-  char* dval;
-  char* arith;
-  char* tar;
-  char* endval;
-  char* incr;
-  char* decr;
-  char* qval;
+  char* func;
 
+  char* loop;
+
+  char* EQ;
+  char* GT;
+  char* LT;
+  char* GT_EQ;
+  char* LT_EQ;
+
+  char* var_dec;
+  char* var_name;
+
+  char* increment;
+  char* decrement;
   
+  int integer;
 
-#line 155 "snazzle.tab.c" /* yacc.c:355  */
+  char* open_round;
+  char* close_round;
+  char* open_curly;
+  char* close_curly;
+
+  char* speech_mark;
+  char* assignment;
+  char* string;
+
+  char* plus;
+  char* minus;
+  char* divide;
+  char* times;
+
+
+  char* semi_colon;
+
+#line 185 "snazzle.tab.c" /* yacc.c:355  */
 };
 
 typedef union YYSTYPE YYSTYPE;
@@ -168,7 +198,7 @@ int yyparse (void);
 
 /* Copy the second part of user declarations.  */
 
-#line 172 "snazzle.tab.c" /* yacc.c:358  */
+#line 202 "snazzle.tab.c" /* yacc.c:358  */
 
 #ifdef short
 # undef short
@@ -408,23 +438,23 @@ union yyalloc
 #endif /* !YYCOPY_NEEDED */
 
 /* YYFINAL -- State number of the termination state.  */
-#define YYFINAL  30
+#define YYFINAL  16
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   28
+#define YYLAST   142
 
 /* YYNTOKENS -- Number of terminals.  */
-#define YYNTOKENS  17
+#define YYNTOKENS  46
 /* YYNNTS -- Number of nonterminals.  */
-#define YYNNTS  2
+#define YYNNTS  5
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  29
+#define YYNRULES  24
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  31
+#define YYNSTATES  47
 
 /* YYTRANSLATE[YYX] -- Symbol number corresponding to YYX as returned
    by yylex, with out-of-bounds checking.  */
 #define YYUNDEFTOK  2
-#define YYMAXUTOK   271
+#define YYMAXUTOK   288
 
 #define YYTRANSLATE(YYX)                                                \
   ((unsigned int) (YYX) <= YYMAXUTOK ? yytranslate[YYX] : YYUNDEFTOK)
@@ -437,15 +467,15 @@ static const yytype_uint8 yytranslate[] =
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
+      40,    41,    27,    29,     2,    30,     2,    28,     2,     2,
+       2,     2,     2,     2,     2,     2,     2,     2,     2,    42,
+      31,    37,    33,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
+       2,     2,     2,    43,     2,    38,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
@@ -460,16 +490,17 @@ static const yytype_uint8 yytranslate[] =
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     1,     2,     3,     4,
        5,     6,     7,     8,     9,    10,    11,    12,    13,    14,
-      15,    16
+      15,    16,    17,    18,    19,    20,    21,    22,    23,    24,
+      25,    26,    32,    34,    35,    36,    39,    44,    45
 };
 
 #if YYDEBUG
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    66,    66,    69,    72,    75,    78,    81,    84,    87,
-      90,    93,    96,    99,   102,   105,   109,   112,   115,   118,
-     122,   125,   128,   131,   134,   137,   140,   143,   146,   149
+       0,   105,   105,   106,   107,   108,   109,   112,   113,   116,
+     119,   120,   121,   122,   123,   124,   125,   126,   127,   128,
+     129,   130,   131,   132,   133
 };
 #endif
 
@@ -478,9 +509,14 @@ static const yytype_uint8 yyrline[] =
    First, the terminals, then, starting at YYNTOKENS, nonterminals.  */
 static const char *const yytname[] =
 {
-  "$end", "error", "$undefined", "FUNCTION", "BRACKET", "INT", "FLOAT",
-  "STRING", "ASSIGN", "CONDITIONAL", "DECLAREVAR", "ARITHMETIC", "TARGET",
-  "END", "INCREMENT", "DECREMENT", "QUOTELITERAL", "$accept", "snazzle", YY_NULLPTR
+  "$end", "error", "$undefined", "FUNCTION", "LOOP", "EQ", "GT", "LT",
+  "GT_EQ", "LT_EQ", "VAR_DECLARATION", "IDENTIFIER", "INCREMENT",
+  "DECREMENT", "INTEGER", "OPEN_ROUND", "CLOSE_ROUND", "OPEN_CURLY",
+  "CLOSE_CURLY", "SPEECH_MARK", "ASSIGNMENT", "STRING", "PLUS", "MINUS",
+  "DIVIDE", "TIMES", "SEMI_COLON", "'*'", "'/'", "'+'", "'-'", "'<'",
+  "\"<=\"", "'>'", "\">=\"", "\"++\"", "\"--\"", "'='", "'}'", "\"for\"",
+  "'('", "')'", "';'", "'{'", "\"var\"", "\":=\"", "$accept", "stmt",
+  "compound_stmt", "variable_definition", "expr", YY_NULLPTR
 };
 #endif
 
@@ -490,14 +526,17 @@ static const char *const yytname[] =
 static const yytype_uint16 yytoknum[] =
 {
        0,   256,   257,   258,   259,   260,   261,   262,   263,   264,
-     265,   266,   267,   268,   269,   270,   271
+     265,   266,   267,   268,   269,   270,   271,   272,   273,   274,
+     275,   276,   277,   278,   279,   280,   281,    42,    47,    43,
+      45,    60,   282,    62,   283,   284,   285,    61,   125,   286,
+      40,    41,    59,   123,   287,   288
 };
 # endif
 
-#define YYPACT_NINF -4
+#define YYPACT_NINF -36
 
 #define yypact_value_is_default(Yystate) \
-  (!!((Yystate) == (-4)))
+  (!!((Yystate) == (-36)))
 
 #define YYTABLE_NINF -1
 
@@ -508,10 +547,11 @@ static const yytype_uint16 yytoknum[] =
      STATE-NUM.  */
 static const yytype_int8 yypact[] =
 {
-      -3,    -3,    -3,    -3,    -3,    -3,    -3,    -3,    -3,    -3,
-      -3,    -3,    -3,    -3,    -3,    28,    -4,    -4,    -4,    -4,
-      -4,    -4,    -4,    -4,    -4,    -4,    -4,    -4,    -4,    -4,
-      -4
+      -1,   -36,   -36,   -36,   -35,     4,   -36,   -36,    -5,     8,
+      -7,   -33,    43,     4,    59,   -29,   -36,   -36,   -36,   -36,
+       4,     4,     4,     4,     4,     4,     4,     4,   -36,   -36,
+       4,   -36,    74,   -36,     4,    98,    98,   105,   105,   -34,
+     -34,   -34,   -34,   -36,    -1,    89,   -36
 };
 
   /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -519,22 +559,23 @@ static const yytype_int8 yypact[] =
      means the default is an error.  */
 static const yytype_uint8 yydefact[] =
 {
-       0,    16,    17,    20,    25,    26,    27,    28,    19,    29,
-      18,    24,    22,    23,    21,     0,     2,     3,    10,    11,
-      12,    13,    14,     4,    15,     9,     8,     6,     7,     5,
-       1
+       0,    12,    10,    11,     0,     0,     6,     7,     0,     0,
+       0,     0,     0,     0,     0,     0,     1,     2,     8,     4,
+       0,     0,     0,     0,     0,     0,     0,     0,    19,    20,
+       0,     5,     0,    13,     0,    17,    18,    15,    16,    21,
+      22,    23,    24,    14,     0,     9,     3
 };
 
   /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-      -4,    13
+     -36,   -10,   -36,   -36,    35
 };
 
   /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
-      -1,    15
+      -1,     9,    10,    11,    12
 };
 
   /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
@@ -542,42 +583,67 @@ static const yytype_int8 yydefgoto[] =
      number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_uint8 yytable[] =
 {
-       1,     2,     3,     4,     5,     6,     7,     8,     9,    10,
-      11,    12,    13,    14,    16,    17,    18,    19,    20,    21,
-      22,    23,    24,    25,    26,    27,    28,    29,    30
+      18,    28,    29,    30,     1,    13,    15,     2,    16,    19,
+       1,     0,     0,     2,     3,     1,    34,     0,     2,     0,
+       3,     0,     0,     0,     0,     3,     0,     0,     0,     0,
+       0,    17,     4,     5,    46,     6,     7,     8,     4,     5,
+      14,     6,     7,     8,     5,     0,     0,     0,    32,     0,
+       0,     0,     0,     0,     0,    35,    36,    37,    38,    39,
+      40,    41,    42,     0,     0,    43,     0,     0,     0,    45,
+      20,    21,    22,    23,    24,    25,    26,    27,    28,    29,
+      30,     0,     0,     0,     0,    31,    20,    21,    22,    23,
+      24,    25,    26,    27,    28,    29,    30,     0,     0,     0,
+      33,    20,    21,    22,    23,    24,    25,    26,    27,    28,
+      29,    30,     0,     0,     0,    44,    20,    21,    22,    23,
+      24,    25,    26,    27,    28,    29,    30,    22,    23,    24,
+      25,    26,    27,    28,    29,    30,    24,    25,    26,    27,
+      28,    29,    30
 };
 
-static const yytype_uint8 yycheck[] =
+static const yytype_int8 yycheck[] =
 {
-       3,     4,     5,     6,     7,     8,     9,    10,    11,    12,
-      13,    14,    15,    16,     1,     2,     3,     4,     5,     6,
-       7,     8,     9,    10,    11,    12,    13,    14,     0
+      10,    35,    36,    37,    11,    40,    11,    14,     0,    42,
+      11,    -1,    -1,    14,    21,    11,    45,    -1,    14,    -1,
+      21,    -1,    -1,    -1,    -1,    21,    -1,    -1,    -1,    -1,
+      -1,    38,    39,    40,    44,    42,    43,    44,    39,    40,
+       5,    42,    43,    44,    40,    -1,    -1,    -1,    13,    -1,
+      -1,    -1,    -1,    -1,    -1,    20,    21,    22,    23,    24,
+      25,    26,    27,    -1,    -1,    30,    -1,    -1,    -1,    34,
+      27,    28,    29,    30,    31,    32,    33,    34,    35,    36,
+      37,    -1,    -1,    -1,    -1,    42,    27,    28,    29,    30,
+      31,    32,    33,    34,    35,    36,    37,    -1,    -1,    -1,
+      41,    27,    28,    29,    30,    31,    32,    33,    34,    35,
+      36,    37,    -1,    -1,    -1,    41,    27,    28,    29,    30,
+      31,    32,    33,    34,    35,    36,    37,    29,    30,    31,
+      32,    33,    34,    35,    36,    37,    31,    32,    33,    34,
+      35,    36,    37
 };
 
   /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
      symbol of state STATE-NUM.  */
 static const yytype_uint8 yystos[] =
 {
-       0,     3,     4,     5,     6,     7,     8,     9,    10,    11,
-      12,    13,    14,    15,    16,    18,    18,    18,    18,    18,
-      18,    18,    18,    18,    18,    18,    18,    18,    18,    18,
-       0
+       0,    11,    14,    21,    39,    40,    42,    43,    44,    47,
+      48,    49,    50,    40,    50,    11,     0,    38,    47,    42,
+      27,    28,    29,    30,    31,    32,    33,    34,    35,    36,
+      37,    42,    50,    41,    45,    50,    50,    50,    50,    50,
+      50,    50,    50,    50,    41,    50,    47
 };
 
   /* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
 static const yytype_uint8 yyr1[] =
 {
-       0,    17,    18,    18,    18,    18,    18,    18,    18,    18,
-      18,    18,    18,    18,    18,    18,    18,    18,    18,    18,
-      18,    18,    18,    18,    18,    18,    18,    18,    18,    18
+       0,    46,    47,    47,    47,    47,    47,    48,    48,    49,
+      50,    50,    50,    50,    50,    50,    50,    50,    50,    50,
+      50,    50,    50,    50,    50
 };
 
   /* YYR2[YYN] -- Number of symbols on the right hand side of rule YYN.  */
 static const yytype_uint8 yyr2[] =
 {
-       0,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,     2,     2,     2,     2,     2,     1,     1,     1,     1,
-       1,     1,     1,     1,     1,     1,     1,     1,     1,     1
+       0,     2,     2,     5,     2,     2,     1,     1,     2,     4,
+       1,     1,     1,     3,     3,     3,     3,     3,     3,     2,
+       2,     3,     3,     3,     3
 };
 
 
@@ -1253,233 +1319,14 @@ yyreduce:
   YY_REDUCE_PRINT (yyn);
   switch (yyn)
     {
-        case 2:
-#line 66 "snazzle.y" /* yacc.c:1646  */
-    {
-    cout << "bison found a function: " << (yyvsp[-1].mval) << endl; free((yyvsp[-1].mval));
-    }
-#line 1262 "snazzle.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 3:
-#line 69 "snazzle.y" /* yacc.c:1646  */
-    {
-    cout << "Bison found a bracket: " << (yyvsp[-1].gval) << endl; free((yyvsp[-1].gval));
-    }
-#line 1270 "snazzle.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 4:
-#line 72 "snazzle.y" /* yacc.c:1646  */
-    {
-    cout << "Bison found a a decleration: " << (yyvsp[-1].dval) << endl; free((yyvsp[-1].dval));
-    }
-#line 1278 "snazzle.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 5:
-#line 75 "snazzle.y" /* yacc.c:1646  */
-    {
-    cout << "Bison found a a QUOTELITERAL: " << (yyvsp[-1].qval) << endl; free((yyvsp[-1].qval));
-    }
-#line 1286 "snazzle.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 6:
-#line 78 "snazzle.y" /* yacc.c:1646  */
-    {
-    cout << "Bison found a a INCREMENT: " << (yyvsp[-1].incr) << endl; free((yyvsp[-1].incr));
-    }
-#line 1294 "snazzle.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 7:
-#line 81 "snazzle.y" /* yacc.c:1646  */
-    {
-    cout << "Bison found a a DECREMENT: " << (yyvsp[-1].decr) << endl; free((yyvsp[-1].decr));
-    }
-#line 1302 "snazzle.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 8:
-#line 84 "snazzle.y" /* yacc.c:1646  */
-    {
-    cout << "Bison found a a end: " << (yyvsp[-1].endval) << endl; free((yyvsp[-1].endval));
-    }
-#line 1310 "snazzle.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 9:
-#line 87 "snazzle.y" /* yacc.c:1646  */
-    {
-    cout << "Bison found a a target : " << (yyvsp[-1].tar) << endl; free((yyvsp[-1].tar));
-    }
-#line 1318 "snazzle.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 10:
-#line 90 "snazzle.y" /* yacc.c:1646  */
-    {
-      cout << "bison found an int: " << (yyvsp[-1].ival) << endl;
-    }
+        case 14:
+#line 123 "snazzle.y" /* yacc.c:1646  */
+    {cout <<"1" << endl; }
 #line 1326 "snazzle.tab.c" /* yacc.c:1646  */
     break;
 
-  case 11:
-#line 93 "snazzle.y" /* yacc.c:1646  */
-    {
-      cout << "bison found a float: " << (yyvsp[-1].fval) << endl;
-    }
-#line 1334 "snazzle.tab.c" /* yacc.c:1646  */
-    break;
 
-  case 12:
-#line 96 "snazzle.y" /* yacc.c:1646  */
-    {
-      cout << "bison found a string: " << (yyvsp[-1].sval) << endl; free((yyvsp[-1].sval));
-    }
-#line 1342 "snazzle.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 13:
-#line 99 "snazzle.y" /* yacc.c:1646  */
-    {
-      cout << "bison found a assignment op: " << (yyvsp[-1].aval) << endl; free((yyvsp[-1].aval));
-    }
-#line 1350 "snazzle.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 14:
-#line 102 "snazzle.y" /* yacc.c:1646  */
-    {
-      cout << "bison found a CONDITIONAL op: " << (yyvsp[-1].con) << endl; free((yyvsp[-1].con));
-    }
-#line 1358 "snazzle.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 15:
-#line 105 "snazzle.y" /* yacc.c:1646  */
-    {
-      cout << "bison found a ARITHMETIC: " << (yyvsp[-1].arith) << endl; free((yyvsp[-1].arith));
-    }
-#line 1366 "snazzle.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 16:
-#line 109 "snazzle.y" /* yacc.c:1646  */
-    {
-    cout << "bison found a function: " << (yyvsp[0].mval) << endl; free((yyvsp[0].mval));
-    }
-#line 1374 "snazzle.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 17:
-#line 112 "snazzle.y" /* yacc.c:1646  */
-    {
-    cout << "Bison found a bracket: " << (yyvsp[0].gval) << endl; free((yyvsp[0].gval));
-    }
-#line 1382 "snazzle.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 18:
-#line 115 "snazzle.y" /* yacc.c:1646  */
-    {
-    cout << "Bison found a TARGET: " << (yyvsp[0].tar) << endl; free((yyvsp[0].tar));
-    }
-#line 1390 "snazzle.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 19:
-#line 118 "snazzle.y" /* yacc.c:1646  */
-    {
-      //Check for repeating vars.
-      cout << "Bison found a a decleration: " << (yyvsp[0].dval) << endl; free((yyvsp[0].dval));
-    }
-#line 1399 "snazzle.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 20:
-#line 122 "snazzle.y" /* yacc.c:1646  */
-    {
-      cout << "bison found an int: " << (yyvsp[0].ival) << endl;
-    }
-#line 1407 "snazzle.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 21:
-#line 125 "snazzle.y" /* yacc.c:1646  */
-    {
-    cout << "Bison found a a QUOTELITERAL: " << (yyvsp[0].qval) << endl; free((yyvsp[0].qval));
-    }
-#line 1415 "snazzle.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 22:
-#line 128 "snazzle.y" /* yacc.c:1646  */
-    {
-    cout << "Bison found a a INCREMENT: " << (yyvsp[0].incr) << endl; free((yyvsp[0].incr));
-    }
-#line 1423 "snazzle.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 23:
-#line 131 "snazzle.y" /* yacc.c:1646  */
-    {
-    cout << "Bison found a a DECREMENT: " << (yyvsp[0].decr) << endl; free((yyvsp[0].decr));
-    }
-#line 1431 "snazzle.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 24:
-#line 134 "snazzle.y" /* yacc.c:1646  */
-    {
-    cout << "Bison found a a DECREMENT: " << (yyvsp[0].endval) << endl; free((yyvsp[0].endval));
-    }
-#line 1439 "snazzle.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 25:
-#line 137 "snazzle.y" /* yacc.c:1646  */
-    {
-      cout << "bison found a float: " << (yyvsp[0].fval) << endl;
-    }
-#line 1447 "snazzle.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 26:
-#line 140 "snazzle.y" /* yacc.c:1646  */
-    {
-      cout << "bison found a string: " << (yyvsp[0].sval) << endl; free((yyvsp[0].sval));
-    }
-#line 1455 "snazzle.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 27:
-#line 143 "snazzle.y" /* yacc.c:1646  */
-    {
-      cout << "bison found a Assignment : " << (yyvsp[0].aval) << endl; free((yyvsp[0].aval));
-    }
-#line 1463 "snazzle.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 28:
-#line 146 "snazzle.y" /* yacc.c:1646  */
-    {
-      cout << "bison found a CONDITIONAL op: " << (yyvsp[0].con) << endl; free((yyvsp[0].con));
-    }
-#line 1471 "snazzle.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 29:
-#line 149 "snazzle.y" /* yacc.c:1646  */
-    {
-      cout << "bison found a an ARITHMETIC: " << (yyvsp[0].arith) << endl; free((yyvsp[0].arith));
-    }
-#line 1479 "snazzle.tab.c" /* yacc.c:1646  */
-    break;
-
-
-#line 1483 "snazzle.tab.c" /* yacc.c:1646  */
+#line 1330 "snazzle.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1707,10 +1554,13 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 154 "snazzle.y" /* yacc.c:1906  */
+#line 135 "snazzle.y" /* yacc.c:1906  */
 
 
 int main(int, char**) {
+  //#ifdef YYDEBUG
+  //yydebug = 1;
+  //#endif
   // Open a file handle to a particular file:
   FILE *myfile = fopen("a.snazzle.file", "r");
   // Make sure it is valid:
@@ -1727,8 +1577,10 @@ int main(int, char**) {
 }
 
 void yyerror(const char *s) {
+
+  fprinf (stderr, "%s\n", s);
+  
   cout << "EEK, parse error!  Message: " << s << endl;
   // might as well halt now:
   exit(-1);
 }
-
