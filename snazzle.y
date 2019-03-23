@@ -27,6 +27,8 @@
 // The lower the rule, the higher the precedence
 // Specify the tokens and precedence
 
+
+%token <val> MAIN
 %token <val> FUNCTION
 
 %token <val> LOOP
@@ -39,7 +41,7 @@
 %token <val> LT_EQ
 
 %token <val> VAR_DECLARATION
-%token <val> IDENTIFIER
+%token IDENTIFIER
 
 %token <val> INCREMENT
 %token <val> DECREMENT
@@ -68,8 +70,9 @@
 %right INCREMENT DECREMENT
 %left EQ
 
-%type<integer> expr INTEGER
+%type<integer> intExpr INTEGER
 %type<val> strExpr STRING
+%type<val> idenExpr IDENTIFIER
 
 
 %%
@@ -77,10 +80,10 @@
 
 stmt:                     compound_stmt CLOSE_CURLY
                         | LOOP OPEN_ROUND stmt stmt stmt CLOSE_ROUND stmt 
+                        | MAIN stmt
                         | variable_definition SEMI_COLON
                         | function_type SEMI_COLON
                         | expr SEMI_COLON
-                        | strExpr SEMI_COLON
                         | SEMI_COLON
                         ;
 
@@ -90,36 +93,45 @@ function_type:            FUNCTION OPEN_ROUND SPEECH_MARK expr SPEECH_MARK CLOSE
                         ;
 
 
-
 compound_stmt:            OPEN_CURLY
                         | compound_stmt stmt
                         ;
 
+
 variable_definition:      VAR_DECLARATION IDENTIFIER ASSIGNMENT expr
-                        | VAR_DECLARATION IDENTIFIER ASSIGNMENT strExpr expr
                         | IDENTIFIER ASSIGNMENT expr
-                        | IDENTIFIER ASSIGNMENT strExpr expr
-                        ;           
+                        ;
+
+
+
+expr:                     strExpr
+                        | idenExpr
+                        | intExpr
+                        ; 
+
 
 strExpr:                STRING 
-                        | SPEECH_MARK expr SPEECH_MARK
-                        | OPEN_ROUND expr CLOSE_ROUND
-                        | IDENTIFIER  
+                        | SPEECH_MARK strExpr SPEECH_MARK { fprintf(output, "Test: %s \n", $2); }
+                        | OPEN_ROUND strExpr CLOSE_ROUND 
                         ;
-expr:                     INTEGER {$$ = $1;}      
-                        | expr EQ expr
-                        | expr PLUS expr { $$ = $1 + $3; fprintf(output, "Test: %d = %d + %d", $$, $1, $3); }
-                        | expr MINUS expr  { $$ = $1 - $3; fprintf(output, "Test: %d = %d + %d", $$, $1, $3); }
-                        | expr TIMES expr { $$ = $1 * $3; fprintf(output, "Test: %d = %d + %d", $$, $1, $3); }
-                        | expr DIVIDE expr  { $$ = $1 / $3; fprintf(output, "Test: %d = %d + %d", $$, $1, $3); }
-                        | expr INCREMENT    
-                        | expr DECREMENT   
-                        | expr LT expr
-                        | expr LT_EQ expr
-                        | expr GT expr
-                        | expr GT_EQ expr
-                       
 
+
+idenExpr:                 IDENTIFIER     
+                        | IDENTIFIER INCREMENT  {}  
+                        | IDENTIFIER DECREMENT  {}
+                        | IDENTIFIER LT INTEGER {}
+                        | IDENTIFIER LT_EQ INTEGER {}
+                        | IDENTIFIER GT INTEGER {}
+                        | IDENTIFIER GT_EQ INTEGER {}                
+                        ; 
+
+
+intExpr:                  INTEGER {$$ = $1;} 
+                        | intExpr EQ intExpr {}
+                        | intExpr PLUS intExpr { $$ = $1 + $3; fprintf(output, "Test: %d = %d + %d \n", $$, $1, $3); }
+                        | intExpr MINUS intExpr  { $$ = $1 - $3; fprintf(output, "Test: %d = %d - %d \n", $$, $1, $3); }
+                        | intExpr TIMES intExpr { $$ = $1 * $3; fprintf(output, "Test: %d = %d * %d \n", $$, $1, $3); }
+                        | intExpr DIVIDE intExpr  { $$ = $1 / $3; fprintf(output, "Test: %d = %d / %d \n", $$, $1, $3); }
                         ;  
 
 %%
@@ -129,6 +141,7 @@ int main(int, char**) {
   #ifdef YYDEBUG
   yydebug = 1;
   #endif
+
   // Open a file handle to a particular file:
   FILE *myfile = fopen("a.snazzle.file", "r");
   // Make sure it is valid:

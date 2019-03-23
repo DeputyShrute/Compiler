@@ -45,30 +45,31 @@ extern int yydebug;
 # define YYTOKENTYPE
   enum yytokentype
   {
-    FUNCTION = 258,
-    LOOP = 259,
-    EQ = 260,
-    GT = 261,
-    LT = 262,
-    GT_EQ = 263,
-    LT_EQ = 264,
-    VAR_DECLARATION = 265,
-    IDENTIFIER = 266,
-    INCREMENT = 267,
-    DECREMENT = 268,
-    OPEN_ROUND = 269,
-    CLOSE_ROUND = 270,
-    OPEN_CURLY = 271,
-    CLOSE_CURLY = 272,
-    SPEECH_MARK = 273,
-    ASSIGNMENT = 274,
-    INTEGER = 275,
-    STRING = 276,
-    PLUS = 277,
-    MINUS = 278,
-    DIVIDE = 279,
-    TIMES = 280,
-    SEMI_COLON = 281
+    MAIN = 258,
+    FUNCTION = 259,
+    LOOP = 260,
+    EQ = 261,
+    GT = 262,
+    LT = 263,
+    GT_EQ = 264,
+    LT_EQ = 265,
+    VAR_DECLARATION = 266,
+    IDENTIFIER = 267,
+    INCREMENT = 268,
+    DECREMENT = 269,
+    OPEN_ROUND = 270,
+    CLOSE_ROUND = 271,
+    OPEN_CURLY = 272,
+    CLOSE_CURLY = 273,
+    SPEECH_MARK = 274,
+    ASSIGNMENT = 275,
+    INTEGER = 276,
+    STRING = 277,
+    PLUS = 278,
+    MINUS = 279,
+    DIVIDE = 280,
+    TIMES = 281,
+    SEMI_COLON = 282
   };
 #endif
 
@@ -84,7 +85,7 @@ union YYSTYPE
 
 
 
-#line 88 "snazzle.tab.h" /* yacc.c:1909  */
+#line 89 "snazzle.tab.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;
