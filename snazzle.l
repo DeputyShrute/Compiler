@@ -8,6 +8,7 @@
 %%
 [ \t\n]+           																;
 "print"     		  				{ yylval.val = strdup(yytext); 			return FUNCTION; }
+"main"                    {yylval.val = strdup(yytext); return MAIN; }
 
 "for"       						{ yylval.val = strdup(yytext); 			return LOOP; }
 
