@@ -2,13 +2,16 @@
   #include <cstdio>
   #include <string.h>
   #include "snazzle.tab.h"  // to get the token types from Bison
-
+  int newLine = 1;
 
 %}
 %%
-[ \t\n]+           																;
+[ \t]+ 
+[\n]+ 								{++newLine;}
+"main"                  		    { yylval.val = strdup(yytext);      return MAIN; } 
 "print"     		  				{ yylval.val = strdup(yytext); 			return FUNCTION; }
-"main"                    {yylval.val = strdup(yytext); return MAIN; }
+"ENDFOR"                  { yylval.val = strdup(yytext); 			return ENDFOR; }
+
 
 "for"       						{ yylval.val = strdup(yytext); 			return LOOP; }
 
@@ -26,7 +29,7 @@
 "++" 								{ yylval.val = strdup(yytext); 		return INCREMENT; }
 "--" 								{ yylval.val = strdup(yytext); 		return DECREMENT; }
 
-[0-9]+          					{ yylval.integer = atoi(yytext); 			return INTEGER; }
+[0-9]+          					{ yylval.val = strdup(yytext); 			return INTEGER; }
 	
 "("									{ yylval.val = strdup(yytext); 		return OPEN_ROUND; } 
 ")"									{ yylval.val = strdup(yytext); 		return CLOSE_ROUND; }

@@ -1,24 +1,8 @@
 main
 {
-	1 + 1;
-	2 * 2;
-
-
-	for(var a := 5; a > 10; a++;)
-	{
-		var b := 0;
-		b := 1 + 1;
-
-		var c := "Hello";
-
-		var d := 2 * 3;
-
-		var d := 2 / 3;
+	var b := 0;
+	var c := 2;
+	 b := 1 + 1;
 	
-		var d := 2 - 3;
 
-		print ("kms");
-		print(d);
-	
-	}
 }

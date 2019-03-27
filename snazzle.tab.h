@@ -69,7 +69,8 @@ extern int yydebug;
     MINUS = 279,
     DIVIDE = 280,
     TIMES = 281,
-    SEMI_COLON = 282
+    ENDFOR = 282,
+    SEMI_COLON = 283
   };
 #endif
 
@@ -85,7 +86,7 @@ union YYSTYPE
 
 
 
-#line 89 "snazzle.tab.h" /* yacc.c:1909  */
+#line 90 "snazzle.tab.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;
