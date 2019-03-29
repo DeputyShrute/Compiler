@@ -1,3 +1,12 @@
-Basic Compier
-Built on C++
-TwoBAsic
+Basic Compiler buit with C++
+
+Uses FLEX and BISON
+
+Abilities:
+Addition
+Substraction
+Divsion
+Multiplication
+Printing
+For loops
+if statements
