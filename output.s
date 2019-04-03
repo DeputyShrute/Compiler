@@ -1,3 +1,4 @@
+.code32
 .section .text
 .section .data
 a:
@@ -14,14 +15,14 @@ f:
 .long 0
 .globl _start
 _start:
-movl $0,  b 
+movl $32,  b 
 movl  b , %ebx
 movl $2,  c 
 movl  c , %ebx
-movl $1, %eax
-movl $1, %ebx
-addl %eax, %ebx
-movl %ebx, b 
-movl b , %ebx
+movl  b, %eax
+movl c, %ebx
+imull %eax, %ebx
+movl %ebx,  d
+movl  d, %ebx
 movl $1, %eax
 int $0x80

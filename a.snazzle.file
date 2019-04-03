@@ -1,8 +1,7 @@
 main
-{
-	var b := 0;
+{	
+	var b := 32;
 	var c := 2;
-	 b := 1 + 1;
-	
 
+	var d:= b*c;
 }

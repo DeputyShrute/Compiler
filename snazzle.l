@@ -10,10 +10,18 @@
 [\n]+ 								{++newLine;}
 "main"                  		    { yylval.val = strdup(yytext);      return MAIN; } 
 "print"     		  				{ yylval.val = strdup(yytext); 			return FUNCTION; }
-"ENDFOR"                  { yylval.val = strdup(yytext); 			return ENDFOR; }
+
 
 
 "for"       						{ yylval.val = strdup(yytext); 			return LOOP; }
+"ENDFOR"              			    { yylval.val = strdup(yytext); 			return ENDFOR; }
+"ENDNESTFOR"						{ yylval.val = strdup(yytext); 			return ENDNESTFOR; }
+
+"if"       							{ yylval.val = strdup(yytext); 			return IF; }
+"ENDIF"              			    { yylval.val = strdup(yytext); 			return ENDIF; }
+"ELSE"							{ yylval.val = strdup(yytext); 			return ELSE; }
+
+
 
 "="									{ yylval.val = strdup(yytext); 				return EQ; }
 ">"									{ yylval.val = strdup(yytext); 				return GT; }
