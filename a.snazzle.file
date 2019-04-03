@@ -1,7 +1,10 @@
 main
 {	
-	var b := 32;
-	var c := 2;
-
-	var d:= b*c;
+	for(var a:=0; a<5; ++;)
+	{
+	for(var b:=0; b<2; ++;)
+	{
+		c:=c+1;
+	}ENDNESTFOR;
+	}ENDFOR;
 }
