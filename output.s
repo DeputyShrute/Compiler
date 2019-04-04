@@ -1,30 +1,7 @@
 .code32
 
-.include "record-def.s"
-.include "linux.s"
 
-.equ ST_WRITE_BUFFER, 8
-.equ ST_FILEDES, 12
 .section .text
-.globl write_record
-.type write_record, @function
-write_record:
-pushl %ebp
-movl %esp, %ebp
-
-pushl %ebx
-movl $SYS_WRITE, %eax
-movl ST_FILEDES(%ebp), %ebx
-movl ST_WRITE_BUFFER(%ebp),%ecx
-movl $RECORD_SIZE, %edx
-int $LINUX_SYSCALL
-
-popl %ebx
-
-movl %ebp, %esp
-popl %ebp
-ret
-
 
 .section .data
 a:
@@ -40,61 +17,74 @@ e:
 f:
 .ascii "0"
 
-file_name:
-.ascii "test.dat\0"
-.equ ST_FILE_DESCRIPTOR, -4
-
 .globl _start
 _start:
 
-addl $1, a
 
-#Copy the stack pointer to %ebp
-movl %esp, %ebp
+movl $1, %ecx
+loop1:
+cmpl $4, %ecx
+je end1
+pushl %ecx
 
+movl $1, %ecx
+loop2:
+cmpl $4, %ecx
+je end2
+pushl %ecx
 
-movl $SYS_OPEN, %eax
-movl $file_name, %ebx
-movl $0101, %ecx
-
-movl $0666, %edx
-int $LINUX_SYSCALL
-
-movl %eax, ST_FILE_DESCRIPTOR(%ebp)
-
-
-pushl ST_FILE_DESCRIPTOR(%ebp)
-pushl $a
-call write_record
-addl $8, %esp
+movl $1, %ecx
+loop3:
+cmpl $4, %ecx
+je end3
+pushl %ecx
 
 
-pushl ST_FILE_DESCRIPTOR(%ebp)
-pushl $b
-call write_record
+movl $1, %ecx
+loop4:
+cmpl $4, %ecx
+je end4
+pushl %ecx
 
 
-pushl ST_FILE_DESCRIPTOR(%ebp)
-pushl $c
-call write_record
+movl $1, %ecx
+loop5:
+cmpl $4, %ecx
+je end5
+pushl %ecx
 
 
-pushl ST_FILE_DESCRIPTOR(%ebp)
-pushl $d
-call write_record
-
-pushl ST_FILE_DESCRIPTOR(%ebp)
-pushl $e
-call write_record
+addl $1, %ebx
 
 
-pushl ST_FILE_DESCRIPTOR(%ebp)
-pushl $f
-call write_record
+popl %ecx
+addl $1, %ecx
+jmp loop5
+end5:
 
 
+popl %ecx
+addl $1, %ecx
+jmp loop4
+end4:
 
-#Exit
-movl $SYS_EXIT, %eax
-movl $0, %ebx
-int $LINUX_SYSCALL
+
+popl %ecx
+addl $1, %ecx
+jmp loop3
+end3:
+
+
+popl %ecx
+addl $1, %ecx
+jmp loop2
+end2:
+
+
+popl %ecx
+addl $1, %ecx
+jmp loop1
+end1:
+
+movl $1, %eax
+int $0x80
