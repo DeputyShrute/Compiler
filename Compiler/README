@@ -10,3 +10,11 @@ Multiplication
 Printing
 For loops
 if statements
+
+
+
+bison -d -t snazzle.y
+
+flex snazzle.l
+
+g++ snazzle.tab.c lex.yy.c -lfl -o snazzle
