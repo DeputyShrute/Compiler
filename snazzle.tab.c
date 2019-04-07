@@ -66,6 +66,7 @@
 
   #include <cstdio>
   #include <iostream>
+  #include <string>
     #include <string.h>
   using namespace std;
 
@@ -78,8 +79,11 @@
   extern FILE *yyin;
    FILE *output=fopen("output.s", "w");
   void yyerror(const char *s);
+  int loop = 0;
+  int if_ = 0;
+ 
 
-#line 83 "snazzle.tab.c" /* yacc.c:339  */
+#line 87 "snazzle.tab.c" /* yacc.c:339  */
 
 # ifndef YY_NULLPTR
 #  if defined __cplusplus && 201103L <= __cplusplus
@@ -117,29 +121,33 @@ extern int yydebug;
     MAIN = 258,
     FUNCTION = 259,
     LOOP = 260,
-    EQ = 261,
-    GT = 262,
-    LT = 263,
-    GT_EQ = 264,
-    LT_EQ = 265,
-    VAR_DECLARATION = 266,
-    IDENTIFIER = 267,
-    INCREMENT = 268,
-    DECREMENT = 269,
-    OPEN_ROUND = 270,
-    CLOSE_ROUND = 271,
-    OPEN_CURLY = 272,
-    CLOSE_CURLY = 273,
-    SPEECH_MARK = 274,
-    ASSIGNMENT = 275,
-    INTEGER = 276,
-    STRING = 277,
-    PLUS = 278,
-    MINUS = 279,
-    DIVIDE = 280,
-    TIMES = 281,
-    ENDFOR = 282,
-    SEMI_COLON = 283
+    ENDFOR = 261,
+    ENDNESTFOR = 262,
+    IF = 263,
+    ENDIF = 264,
+    ELSE = 265,
+    EQ = 266,
+    GT = 267,
+    LT = 268,
+    GT_EQ = 269,
+    LT_EQ = 270,
+    VAR_DECLARATION = 271,
+    IDENTIFIER = 272,
+    INCREMENT = 273,
+    DECREMENT = 274,
+    OPEN_ROUND = 275,
+    CLOSE_ROUND = 276,
+    OPEN_CURLY = 277,
+    CLOSE_CURLY = 278,
+    SPEECH_MARK = 279,
+    ASSIGNMENT = 280,
+    INTEGER = 281,
+    STRING = 282,
+    PLUS = 283,
+    MINUS = 284,
+    DIVIDE = 285,
+    TIMES = 286,
+    SEMI_COLON = 287
   };
 #endif
 
@@ -148,14 +156,14 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 19 "snazzle.y" /* yacc.c:355  */
+#line 23 "snazzle.y" /* yacc.c:355  */
 
   char* val;
   int integer;
 
 
 
-#line 159 "snazzle.tab.c" /* yacc.c:355  */
+#line 167 "snazzle.tab.c" /* yacc.c:355  */
 };
 
 typedef union YYSTYPE YYSTYPE;
@@ -172,7 +180,7 @@ int yyparse (void);
 
 /* Copy the second part of user declarations.  */
 
-#line 176 "snazzle.tab.c" /* yacc.c:358  */
+#line 184 "snazzle.tab.c" /* yacc.c:358  */
 
 #ifdef short
 # undef short
@@ -412,23 +420,23 @@ union yyalloc
 #endif /* !YYCOPY_NEEDED */
 
 /* YYFINAL -- State number of the termination state.  */
-#define YYFINAL  33
+#define YYFINAL  35
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   285
+#define YYLAST   407
 
 /* YYNTOKENS -- Number of terminals.  */
-#define YYNTOKENS  29
+#define YYNTOKENS  33
 /* YYNNTS -- Number of nonterminals.  */
 #define YYNNTS  6
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  46
+#define YYNRULES  53
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  100
+#define YYNSTATES  121
 
 /* YYTRANSLATE[YYX] -- Symbol number corresponding to YYX as returned
    by yylex, with out-of-bounds checking.  */
 #define YYUNDEFTOK  2
-#define YYMAXUTOK   283
+#define YYMAXUTOK   287
 
 #define YYTRANSLATE(YYX)                                                \
   ((unsigned int) (YYX) <= YYMAXUTOK ? yytranslate[YYX] : YYUNDEFTOK)
@@ -465,18 +473,19 @@ static const yytype_uint8 yytranslate[] =
        2,     2,     2,     2,     2,     2,     1,     2,     3,     4,
        5,     6,     7,     8,     9,    10,    11,    12,    13,    14,
       15,    16,    17,    18,    19,    20,    21,    22,    23,    24,
-      25,    26,    27,    28
+      25,    26,    27,    28,    29,    30,    31,    32
 };
 
 #if YYDEBUG
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
-static const yytype_uint8 yyrline[] =
+static const yytype_uint16 yyrline[] =
 {
-       0,    83,    83,    84,    85,    86,    87,    88,    89,    90,
-      91,    95,    96,    97,   101,   102,   106,   107,   108,   109,
-     114,   115,   116,   117,   118,   119,   120,   121,   122,   123,
-     124,   125,   126,   127,   128,   129,   130,   131,   132,   133,
-     134,   135,   136,   137,   138,   139,   140
+       0,    87,    87,    88,    95,   102,   111,   117,   123,   129,
+     135,   142,   145,   148,   149,   150,   151,   152,   157,   158,
+     159,   163,   164,   168,   169,   172,   175,   181,   182,   184,
+     185,   186,   187,   192,   197,   202,   209,   216,   221,   226,
+     231,   238,   243,   248,   252,   253,   254,   255,   256,   257,
+     258,   259,   260,   261
 };
 #endif
 
@@ -485,12 +494,13 @@ static const yytype_uint8 yyrline[] =
    First, the terminals, then, starting at YYNTOKENS, nonterminals.  */
 static const char *const yytname[] =
 {
-  "$end", "error", "$undefined", "MAIN", "FUNCTION", "LOOP", "EQ", "GT",
-  "LT", "GT_EQ", "LT_EQ", "VAR_DECLARATION", "IDENTIFIER", "INCREMENT",
-  "DECREMENT", "OPEN_ROUND", "CLOSE_ROUND", "OPEN_CURLY", "CLOSE_CURLY",
-  "SPEECH_MARK", "ASSIGNMENT", "INTEGER", "STRING", "PLUS", "MINUS",
-  "DIVIDE", "TIMES", "ENDFOR", "SEMI_COLON", "$accept", "stmt",
-  "function_type", "compound_stmt", "variable_definition", "expr", YY_NULLPTR
+  "$end", "error", "$undefined", "MAIN", "FUNCTION", "LOOP", "ENDFOR",
+  "ENDNESTFOR", "IF", "ENDIF", "ELSE", "EQ", "GT", "LT", "GT_EQ", "LT_EQ",
+  "VAR_DECLARATION", "IDENTIFIER", "INCREMENT", "DECREMENT", "OPEN_ROUND",
+  "CLOSE_ROUND", "OPEN_CURLY", "CLOSE_CURLY", "SPEECH_MARK", "ASSIGNMENT",
+  "INTEGER", "STRING", "PLUS", "MINUS", "DIVIDE", "TIMES", "SEMI_COLON",
+  "$accept", "stmt", "function_type", "compound_stmt",
+  "variable_definition", "expr", YY_NULLPTR
 };
 #endif
 
@@ -501,16 +511,17 @@ static const yytype_uint16 yytoknum[] =
 {
        0,   256,   257,   258,   259,   260,   261,   262,   263,   264,
      265,   266,   267,   268,   269,   270,   271,   272,   273,   274,
-     275,   276,   277,   278,   279,   280,   281,   282,   283
+     275,   276,   277,   278,   279,   280,   281,   282,   283,   284,
+     285,   286,   287
 };
 # endif
 
-#define YYPACT_NINF -12
+#define YYPACT_NINF -17
 
 #define yypact_value_is_default(Yystate) \
-  (!!((Yystate) == (-12)))
+  (!!((Yystate) == (-17)))
 
-#define YYTABLE_NINF -19
+#define YYTABLE_NINF -26
 
 #define yytable_value_is_error(Yytable_value) \
   0
@@ -519,16 +530,19 @@ static const yytype_uint16 yytoknum[] =
      STATE-NUM.  */
 static const yytype_int16 yypact[] =
 {
-      67,    67,    -9,    -8,    -7,     4,    54,   -12,    54,   -12,
-     -12,   -12,     9,    -2,    46,     3,    84,   -12,   -11,    26,
-      23,    54,    54,    54,    54,    54,   228,   236,   241,   249,
-     201,   130,   151,   -12,   -12,    17,   -12,   -12,    54,    54,
-      54,    54,    54,   -12,   -12,    54,    54,    54,    54,   -12,
-      31,    54,    36,    43,   254,    40,    40,    40,    40,   193,
-     201,   271,   201,   271,   201,   222,   201,   222,   -12,   -12,
-      28,   -12,    40,    40,    40,    40,   271,   271,   222,   222,
-     -12,   172,   -12,    39,    32,   193,   -12,    61,    41,   -12,
-      52,    54,   107,   -10,    53,    55,    71,    80,   -12,   -12
+      84,    84,   -15,   -11,    12,    21,     0,   -16,   -17,   -16,
+     -17,   -17,   -17,    45,    22,    44,    23,   106,   -17,    39,
+      28,    52,    32,   -16,   -16,   -16,   -16,   -16,   345,   353,
+     358,   366,    65,   150,   171,   -17,   -17,    -3,   -17,   -17,
+     -16,   -16,   -16,   -16,   -16,   -17,   -17,   -16,   -16,   -16,
+     -16,   -17,    41,   -16,    51,    56,   115,   371,    40,    40,
+      40,    40,   318,    65,   388,    65,   388,    65,   339,    65,
+     339,   -17,   -17,    42,    43,   -17,   -17,    40,    40,    40,
+      40,   388,   388,   339,   339,   -17,   192,   -17,    66,   -16,
+     -16,   -16,   -16,   -16,    49,   318,   -17,   -17,    69,    71,
+     213,   234,   255,   276,   297,   -17,    67,   -17,   -17,   -17,
+     -17,   -17,   -16,   128,     8,    70,    75,    77,    82,   -17,
+     -17
 };
 
   /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -536,28 +550,31 @@ static const yytype_int16 yypact[] =
      means the default is an error.  */
 static const yytype_uint8 yydefact[] =
 {
-       0,     0,     0,     0,    16,     0,     0,    14,     0,    20,
-      21,    10,     0,     0,     0,     0,     0,     6,     0,     0,
+       0,     0,     0,     0,     0,    23,     0,     0,    21,     0,
+      27,    28,    17,     0,     0,     0,     0,     0,    13,     0,
        0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
-       0,     0,     0,     1,     8,     2,    15,     7,     0,     0,
-       0,     0,     0,    37,    38,     0,     0,     0,     0,     9,
-       0,     0,     0,     0,     0,    41,    39,    42,    40,    19,
-      36,    32,    34,    30,    33,    29,    35,    31,    22,    23,
-       0,    24,    45,    43,    46,    44,    25,    26,    28,    27,
-      12,     0,    13,     0,    20,    17,     3,     0,     0,    11,
-       0,     0,     0,     0,     0,     0,     0,     0,     4,     5
+       0,     0,     0,     0,     0,     1,    15,     2,    22,    14,
+       0,     0,     0,     0,     0,    44,    45,     0,     0,     0,
+       0,    16,     0,     0,     0,     0,     0,     0,    48,    46,
+      49,    47,    26,    43,    39,    41,    37,    40,    36,    42,
+      38,    29,    30,     0,     0,    11,    31,    52,    50,    53,
+      51,    32,    33,    35,    34,    19,     0,    20,     0,     0,
+       0,     0,     0,     0,    27,    24,     3,    12,     0,     0,
+       0,     0,     0,     0,     0,    18,     0,     8,     7,     6,
+      10,     9,     0,     0,     0,     0,     0,     0,     0,     4,
+       5
 };
 
   /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-     -12,    24,   -12,   -12,   -12,    -6
+     -17,    38,   -17,   -17,   -17,    -7
 };
 
   /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
-      -1,    12,    13,    14,    15,    16
+      -1,    13,    14,    15,    16,    17
 };
 
   /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
@@ -565,104 +582,133 @@ static const yytype_int8 yydefgoto[] =
      number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_int8 yytable[] =
 {
-      31,    50,    32,    94,    95,    20,    18,    19,    51,    33,
-      52,    21,    22,    23,    24,    55,    56,    57,    58,    59,
-      61,    63,    65,    67,    25,    17,    34,    26,    27,    28,
-      29,    37,    71,    72,    73,    74,    75,    53,    36,    76,
-      77,    78,    79,    54,    70,    81,    38,    80,    85,     1,
-       2,     3,    82,    43,    44,    83,    86,     4,     5,    88,
-     -18,     6,    90,     7,    35,     8,    30,     9,    10,     6,
-       1,     2,     3,     8,    11,     9,    10,    89,     4,     5,
-      91,    96,     6,    97,     7,    92,     8,    98,     9,    10,
-      38,    39,    40,    41,    42,    11,    99,    43,    44,     0,
-       0,     0,     0,     0,     0,     0,     0,    45,    46,    47,
-      48,     0,    49,    38,    39,    40,    41,    42,     0,     0,
-      43,    44,     0,     0,     0,     0,     0,     0,     0,     0,
-      45,    46,    47,    48,     0,    93,    38,    39,    40,    41,
-      42,     0,     0,    43,    44,     0,    68,     0,     0,     0,
-       0,     0,     0,    45,    46,    47,    48,    38,    39,    40,
-      41,    42,     0,     0,    43,    44,     0,     0,     0,     0,
-      69,     0,     0,     0,    45,    46,    47,    48,    38,    39,
-      40,    41,    42,     0,     0,    43,    44,     0,     0,     0,
-       0,    87,     0,     0,     0,    45,    46,    47,    48,    38,
-      39,    40,    41,    42,     0,     0,    43,    44,    21,    22,
-      23,    24,     0,     0,     0,     0,    45,    46,    47,    48,
-       0,     0,     0,     0,    26,    27,    28,    29,    38,    39,
-      40,    41,    42,     0,     0,    43,    44,     0,     0,     0,
-      60,     0,     0,     6,     0,    45,    46,     8,    62,     9,
-      10,     6,     0,    64,     0,     8,     6,     9,    10,     0,
-       8,    66,     9,    10,     6,     0,    30,     0,     8,     6,
-       9,    10,     0,     8,     0,    84,    10,    38,    39,    40,
-      41,    42,     0,     0,    43,    44
+      33,    32,    34,    73,     7,    19,    74,    75,     9,    20,
+      10,    11,    23,    24,    25,    26,    58,    59,    60,    61,
+      62,    64,    66,    68,    70,    27,   115,   116,    28,    29,
+      30,    31,    21,    76,    77,    78,    79,    80,    22,    18,
+      81,    82,    83,    84,    55,    35,    86,     1,     2,     3,
+      95,    40,     4,    38,    36,    39,    52,    57,    45,    46,
+       5,     6,    85,    53,     7,    54,     8,    37,     9,    56,
+      10,    11,    87,    88,    96,    97,    12,    23,    24,    25,
+      26,   -25,   100,   101,   102,   103,   104,     1,     2,     3,
+     105,    99,     4,    28,    29,    30,    31,   106,   119,   112,
+       5,     6,   117,   120,     7,   113,     8,   118,     9,     0,
+      10,    11,     0,     0,     0,     0,    12,    40,    41,    42,
+      43,    44,     0,     0,    45,    46,    89,    90,    91,    92,
+      93,     0,     0,     0,    47,    48,    49,    50,    51,    40,
+      41,    42,    43,    44,     0,     0,    45,    46,     0,     0,
+       0,     0,     0,     0,     0,     0,    47,    48,    49,    50,
+     114,    40,    41,    42,    43,    44,     0,     0,    45,    46,
+       0,    71,     0,     0,     0,     0,     0,     0,    47,    48,
+      49,    50,    40,    41,    42,    43,    44,     0,     0,    45,
+      46,     0,     0,     0,     0,    72,     0,     0,     0,    47,
+      48,    49,    50,    40,    41,    42,    43,    44,     0,     0,
+      45,    46,     0,     0,     0,     0,    98,     0,     0,     0,
+      47,    48,    49,    50,    40,    41,    42,    43,    44,     0,
+       0,    45,    46,     0,   107,     0,     0,     0,     0,     0,
+       0,    47,    48,    49,    50,    40,    41,    42,    43,    44,
+       0,     0,    45,    46,     0,   108,     0,     0,     0,     0,
+       0,     0,    47,    48,    49,    50,    40,    41,    42,    43,
+      44,     0,     0,    45,    46,     0,   109,     0,     0,     0,
+       0,     0,     0,    47,    48,    49,    50,    40,    41,    42,
+      43,    44,     0,     0,    45,    46,     0,   110,     0,     0,
+       0,     0,     0,     0,    47,    48,    49,    50,    40,    41,
+      42,    43,    44,     0,     0,    45,    46,     0,   111,     0,
+       0,     0,     0,     0,     0,    47,    48,    49,    50,    40,
+      41,    42,    43,    44,     0,     0,    45,    46,     0,     0,
+       0,     0,     0,     0,     0,     0,    47,    48,    49,    50,
+      40,    41,    42,    43,    44,     0,     0,    45,    46,     0,
+       0,     0,    63,     0,     0,     7,     0,    47,    48,     9,
+      65,    10,    11,     7,     0,    67,     0,     9,     7,    10,
+      11,     0,     9,    69,    10,    11,     7,     0,    32,     0,
+       9,     7,    10,    11,     0,     9,     0,    94,    11,    40,
+      41,    42,    43,    44,     0,     0,    45,    46
 };
 
 static const yytype_int8 yycheck[] =
 {
-       6,    12,     8,    13,    14,    12,    15,    15,    19,     0,
-      21,     7,     8,     9,    10,    21,    22,    23,    24,    25,
-      26,    27,    28,    29,    20,     1,    28,    23,    24,    25,
-      26,    28,    38,    39,    40,    41,    42,    11,    14,    45,
-      46,    47,    48,    20,    27,    51,     6,    16,    54,     3,
-       4,     5,    16,    13,    14,    12,    28,    11,    12,    20,
-      28,    15,    21,    17,    18,    19,    12,    21,    22,    15,
-       3,     4,     5,    19,    28,    21,    22,    16,    11,    12,
-      28,    28,    15,    28,    17,    91,    19,    16,    21,    22,
-       6,     7,     8,     9,    10,    28,    16,    13,    14,    -1,
-      -1,    -1,    -1,    -1,    -1,    -1,    -1,    23,    24,    25,
-      26,    -1,    28,     6,     7,     8,     9,    10,    -1,    -1,
-      13,    14,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,
-      23,    24,    25,    26,    -1,    28,     6,     7,     8,     9,
-      10,    -1,    -1,    13,    14,    -1,    16,    -1,    -1,    -1,
-      -1,    -1,    -1,    23,    24,    25,    26,     6,     7,     8,
-       9,    10,    -1,    -1,    13,    14,    -1,    -1,    -1,    -1,
-      19,    -1,    -1,    -1,    23,    24,    25,    26,     6,     7,
-       8,     9,    10,    -1,    -1,    13,    14,    -1,    -1,    -1,
-      -1,    19,    -1,    -1,    -1,    23,    24,    25,    26,     6,
-       7,     8,     9,    10,    -1,    -1,    13,    14,     7,     8,
-       9,    10,    -1,    -1,    -1,    -1,    23,    24,    25,    26,
-      -1,    -1,    -1,    -1,    23,    24,    25,    26,     6,     7,
-       8,     9,    10,    -1,    -1,    13,    14,    -1,    -1,    -1,
-      12,    -1,    -1,    15,    -1,    23,    24,    19,    12,    21,
-      22,    15,    -1,    12,    -1,    19,    15,    21,    22,    -1,
-      19,    12,    21,    22,    15,    -1,    12,    -1,    19,    15,
-      21,    22,    -1,    19,    -1,    21,    22,     6,     7,     8,
-       9,    10,    -1,    -1,    13,    14
+       7,    17,     9,     6,    20,    20,     9,    10,    24,    20,
+      26,    27,    12,    13,    14,    15,    23,    24,    25,    26,
+      27,    28,    29,    30,    31,    25,    18,    19,    28,    29,
+      30,    31,    20,    40,    41,    42,    43,    44,    17,     1,
+      47,    48,    49,    50,    16,     0,    53,     3,     4,     5,
+      57,    11,     8,    15,    32,    32,    17,    25,    18,    19,
+      16,    17,    21,    24,    20,    26,    22,    23,    24,    17,
+      26,    27,    21,    17,    32,    32,    32,    12,    13,    14,
+      15,    32,    89,    90,    91,    92,    93,     3,     4,     5,
+      21,    25,     8,    28,    29,    30,    31,    26,    21,    32,
+      16,    17,    32,    21,    20,   112,    22,    32,    24,    -1,
+      26,    27,    -1,    -1,    -1,    -1,    32,    11,    12,    13,
+      14,    15,    -1,    -1,    18,    19,    11,    12,    13,    14,
+      15,    -1,    -1,    -1,    28,    29,    30,    31,    32,    11,
+      12,    13,    14,    15,    -1,    -1,    18,    19,    -1,    -1,
+      -1,    -1,    -1,    -1,    -1,    -1,    28,    29,    30,    31,
+      32,    11,    12,    13,    14,    15,    -1,    -1,    18,    19,
+      -1,    21,    -1,    -1,    -1,    -1,    -1,    -1,    28,    29,
+      30,    31,    11,    12,    13,    14,    15,    -1,    -1,    18,
+      19,    -1,    -1,    -1,    -1,    24,    -1,    -1,    -1,    28,
+      29,    30,    31,    11,    12,    13,    14,    15,    -1,    -1,
+      18,    19,    -1,    -1,    -1,    -1,    24,    -1,    -1,    -1,
+      28,    29,    30,    31,    11,    12,    13,    14,    15,    -1,
+      -1,    18,    19,    -1,    21,    -1,    -1,    -1,    -1,    -1,
+      -1,    28,    29,    30,    31,    11,    12,    13,    14,    15,
+      -1,    -1,    18,    19,    -1,    21,    -1,    -1,    -1,    -1,
+      -1,    -1,    28,    29,    30,    31,    11,    12,    13,    14,
+      15,    -1,    -1,    18,    19,    -1,    21,    -1,    -1,    -1,
+      -1,    -1,    -1,    28,    29,    30,    31,    11,    12,    13,
+      14,    15,    -1,    -1,    18,    19,    -1,    21,    -1,    -1,
+      -1,    -1,    -1,    -1,    28,    29,    30,    31,    11,    12,
+      13,    14,    15,    -1,    -1,    18,    19,    -1,    21,    -1,
+      -1,    -1,    -1,    -1,    -1,    28,    29,    30,    31,    11,
+      12,    13,    14,    15,    -1,    -1,    18,    19,    -1,    -1,
+      -1,    -1,    -1,    -1,    -1,    -1,    28,    29,    30,    31,
+      11,    12,    13,    14,    15,    -1,    -1,    18,    19,    -1,
+      -1,    -1,    17,    -1,    -1,    20,    -1,    28,    29,    24,
+      17,    26,    27,    20,    -1,    17,    -1,    24,    20,    26,
+      27,    -1,    24,    17,    26,    27,    20,    -1,    17,    -1,
+      24,    20,    26,    27,    -1,    24,    -1,    26,    27,    11,
+      12,    13,    14,    15,    -1,    -1,    18,    19
 };
 
   /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
      symbol of state STATE-NUM.  */
 static const yytype_uint8 yystos[] =
 {
-       0,     3,     4,     5,    11,    12,    15,    17,    19,    21,
-      22,    28,    30,    31,    32,    33,    34,    30,    15,    15,
-      12,     7,     8,     9,    10,    20,    23,    24,    25,    26,
-      12,    34,    34,     0,    28,    18,    30,    28,     6,     7,
-       8,     9,    10,    13,    14,    23,    24,    25,    26,    28,
-      12,    19,    21,    11,    20,    34,    34,    34,    34,    34,
-      12,    34,    12,    34,    12,    34,    12,    34,    16,    19,
-      27,    34,    34,    34,    34,    34,    34,    34,    34,    34,
-      16,    34,    16,    12,    21,    34,    28,    19,    20,    16,
-      21,    28,    34,    28,    13,    14,    28,    28,    16,    16
+       0,     3,     4,     5,     8,    16,    17,    20,    22,    24,
+      26,    27,    32,    34,    35,    36,    37,    38,    34,    20,
+      20,    20,    17,    12,    13,    14,    15,    25,    28,    29,
+      30,    31,    17,    38,    38,     0,    32,    23,    34,    32,
+      11,    12,    13,    14,    15,    18,    19,    28,    29,    30,
+      31,    32,    17,    24,    26,    16,    17,    25,    38,    38,
+      38,    38,    38,    17,    38,    17,    38,    17,    38,    17,
+      38,    21,    24,     6,     9,    10,    38,    38,    38,    38,
+      38,    38,    38,    38,    38,    21,    38,    21,    17,    11,
+      12,    13,    14,    15,    26,    38,    32,    32,    24,    25,
+      38,    38,    38,    38,    38,    21,    26,    21,    21,    21,
+      21,    21,    32,    38,    32,    18,    19,    32,    32,    21,
+      21
 };
 
   /* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
 static const yytype_uint8 yyr1[] =
 {
-       0,    29,    30,    30,    30,    30,    30,    30,    30,    30,
-      30,    31,    31,    31,    32,    32,    33,    33,    33,    33,
-      34,    34,    34,    34,    34,    34,    34,    34,    34,    34,
-      34,    34,    34,    34,    34,    34,    34,    34,    34,    34,
-      34,    34,    34,    34,    34,    34,    34
+       0,    33,    34,    34,    34,    34,    34,    34,    34,    34,
+      34,    34,    34,    34,    34,    34,    34,    34,    35,    35,
+      35,    36,    36,    37,    37,    37,    37,    38,    38,    38,
+      38,    38,    38,    38,    38,    38,    38,    38,    38,    38,
+      38,    38,    38,    38,    38,    38,    38,    38,    38,    38,
+      38,    38,    38,    38
 };
 
   /* YYR2[YYN] -- Number of symbols on the right hand side of rule YYN.  */
 static const yytype_uint8 yyr2[] =
 {
-       0,     2,     2,     4,    12,    12,     2,     2,     2,     2,
-       1,     6,     4,     4,     1,     2,     1,     4,     4,     3,
-       1,     1,     3,     3,     3,     3,     3,     3,     3,     3,
-       3,     3,     3,     3,     3,     3,     3,     2,     2,     3,
-       3,     3,     3,     3,     3,     3,     3
+       0,     2,     2,     4,    12,    12,     6,     6,     6,     6,
+       6,     3,     4,     2,     2,     2,     2,     1,     6,     4,
+       4,     1,     2,     1,     4,     4,     3,     1,     1,     3,
+       3,     3,     3,     3,     3,     3,     3,     3,     3,     3,
+       3,     3,     3,     3,     2,     2,     3,     3,     3,     3,
+       3,     3,     3,     3
 };
 
 
@@ -1339,223 +1385,322 @@ yyreduce:
   switch (yyn)
     {
         case 3:
-#line 84 "snazzle.y" /* yacc.c:1646  */
-    { fprintf(output, "jmp loop_start\nend_loop:\n" );}
-#line 1345 "snazzle.tab.c" /* yacc.c:1646  */
+#line 89 "snazzle.y" /* yacc.c:1646  */
+    {fprintf(output, "popl %%ecx\n");
+                            fprintf(output, "addl $1, %%ecx\n");
+                            fprintf(output, "jmp loop_start_%d\n",loop);
+                            fprintf(output, "end_loop_%d:\n", loop );loop--;}
+#line 1394 "snazzle.tab.c" /* yacc.c:1646  */
     break;
 
   case 4:
-#line 85 "snazzle.y" /* yacc.c:1646  */
-    {fprintf(output, "movl $%s, %%ecx\nloop_start:\naddl $1, %%ecx\ncmpl $%s, %%ecx\nje end_loop\n", (yyvsp[-6].val), (yyvsp[-4].val));}
-#line 1351 "snazzle.tab.c" /* yacc.c:1646  */
+#line 96 "snazzle.y" /* yacc.c:1646  */
+    {loop++;fprintf(output, "movl $%s, %%ecx\n", (yyvsp[-6].val));
+                            fprintf(output, "loop_start_%d:\n",loop);
+                            fprintf(output, "cmpl $%s, %%ecx\n", (yyvsp[-4].val));
+                            fprintf(output, "je end_loop_%d\n",loop);
+                            fprintf(output, "pushl %%ecx\n");}
+#line 1404 "snazzle.tab.c" /* yacc.c:1646  */
     break;
 
   case 5:
-#line 86 "snazzle.y" /* yacc.c:1646  */
-    {fprintf(output, "movl $%s, %%ecx\nloop_start:\nsubl $1, %%ecx\ncmpl $%s, %%ecx\nje end_loop\n", (yyvsp[-6].val), (yyvsp[-4].val));}
-#line 1357 "snazzle.tab.c" /* yacc.c:1646  */
+#line 103 "snazzle.y" /* yacc.c:1646  */
+    {loop++; fprintf(output, "movl $%s, %%ecx\n", (yyvsp[-6].val));
+                            fprintf(output, "loop_start_%d:\n", loop);
+                            fprintf(output, "subl $1, %%ecx\n");
+                            fprintf(output, "cmpl $%s, %%ecx\n", (yyvsp[-4].val));
+                            fprintf(output, "je end_loop_%d\n", loop);
+                            fprintf(output, "pushl %%ecx\n");}
+#line 1415 "snazzle.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 6:
+#line 112 "snazzle.y" /* yacc.c:1646  */
+    {fprintf(output,"cmpl $%s, %s\n",(yyvsp[-1].val),(yyvsp[-3].val) );
+                            fprintf(output, "jl if%d\n",if_);
+                            fprintf(output, "jmp else%d\n",if_);
+                            fprintf(output, "if%d:\n",if_);if_++;}
+#line 1424 "snazzle.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 7:
+#line 118 "snazzle.y" /* yacc.c:1646  */
+    {fprintf(output,"cmpl $%s, %s\n",(yyvsp[-1].val),(yyvsp[-3].val));
+                            fprintf(output, "jg if%d\n",if_);
+                            fprintf(output, "jmp else%d\n",if_);
+                            fprintf(output, "if%d:\n",if_);if_++;}
+#line 1433 "snazzle.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 8:
+#line 124 "snazzle.y" /* yacc.c:1646  */
+    {fprintf(output,"cmpl $%s, %s\n",(yyvsp[-1].val),(yyvsp[-3].val));
+                            fprintf(output, "je if%d\n",if_);
+                            fprintf(output, "jmp else%d\n",if_);
+                            fprintf(output, "if%d:\n",if_);if_++;}
+#line 1442 "snazzle.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 9:
+#line 130 "snazzle.y" /* yacc.c:1646  */
+    {fprintf(output,"cmpl $%s, %s\n",(yyvsp[-1].val),(yyvsp[-3].val) );
+                            fprintf(output, "jle if%d\n",if_);
+                            fprintf(output, "jmp else%d\n",if_);
+                            fprintf(output, "if%d:\n",if_);if_++;}
+#line 1451 "snazzle.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 10:
+#line 136 "snazzle.y" /* yacc.c:1646  */
+    {fprintf(output,"cmpl $%s, %s\n",(yyvsp[-1].val),(yyvsp[-3].val));
+                            fprintf(output, "jge if%d\n",if_);
+                            fprintf(output, "jmp else%d\n",if_);
+                            fprintf(output, "if%d:\n",if_);if_++;}
+#line 1460 "snazzle.tab.c" /* yacc.c:1646  */
     break;
 
   case 11:
-#line 95 "snazzle.y" /* yacc.c:1646  */
-    { fprintf(output, "\n PRINT STRING      : print ( ' %s ' )"       ,(yyvsp[-2].val));}
-#line 1363 "snazzle.tab.c" /* yacc.c:1646  */
+#line 143 "snazzle.y" /* yacc.c:1646  */
+    {if_--;fprintf(output,"jmp end%d\nelse%d:\n",if_,if_ );if_++;}
+#line 1466 "snazzle.tab.c" /* yacc.c:1646  */
     break;
 
   case 12:
-#line 96 "snazzle.y" /* yacc.c:1646  */
-    { fprintf(output, "\n PRINT VARIABLE    : print (  %s  )"       ,(yyvsp[-1].val));}
-#line 1369 "snazzle.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 13:
-#line 97 "snazzle.y" /* yacc.c:1646  */
-    { fprintf(output, "\n PRINT INTEGER     : print (  %s  )"       ,(yyvsp[-1].val));}
-#line 1375 "snazzle.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 14:
-#line 101 "snazzle.y" /* yacc.c:1646  */
-    { }
-#line 1381 "snazzle.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 15:
-#line 102 "snazzle.y" /* yacc.c:1646  */
-    { }
-#line 1387 "snazzle.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 16:
-#line 106 "snazzle.y" /* yacc.c:1646  */
-    {(yyval.val) = (yyvsp[0].val);}
-#line 1393 "snazzle.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 17:
-#line 107 "snazzle.y" /* yacc.c:1646  */
-    { fprintf(output, "movl %%ebx, %s\nmovl %s, %%ebx\n", (yyvsp[-2].val), (yyvsp[-2].val));}
-#line 1399 "snazzle.tab.c" /* yacc.c:1646  */
+#line 146 "snazzle.y" /* yacc.c:1646  */
+    {if_--;fprintf(output,"end%d:\n",if_);if_++;}
+#line 1472 "snazzle.tab.c" /* yacc.c:1646  */
     break;
 
   case 18:
-#line 108 "snazzle.y" /* yacc.c:1646  */
-    { fprintf(output, "movl $%s, %s\nmovl %s, %%ebx\n", (yyvsp[0].val), (yyvsp[-2].val), (yyvsp[-2].val));}
-#line 1405 "snazzle.tab.c" /* yacc.c:1646  */
+#line 157 "snazzle.y" /* yacc.c:1646  */
+    { }
+#line 1478 "snazzle.tab.c" /* yacc.c:1646  */
     break;
 
   case 19:
-#line 109 "snazzle.y" /* yacc.c:1646  */
-    { fprintf(output, "movl %%ebx, %s\nmovl %s, %%ebx\n", (yyvsp[-2].val), (yyvsp[-2].val));}
-#line 1411 "snazzle.tab.c" /* yacc.c:1646  */
+#line 158 "snazzle.y" /* yacc.c:1646  */
+    { }
+#line 1484 "snazzle.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 20:
+#line 159 "snazzle.y" /* yacc.c:1646  */
+    { }
+#line 1490 "snazzle.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 21:
+#line 163 "snazzle.y" /* yacc.c:1646  */
+    { }
+#line 1496 "snazzle.tab.c" /* yacc.c:1646  */
     break;
 
   case 22:
-#line 116 "snazzle.y" /* yacc.c:1646  */
-    { (yyval.val) = (yyvsp[-1].val);fprintf(output, "\n CR expr CR        : ( %s ) "    , (yyvsp[-2].val));}
-#line 1417 "snazzle.tab.c" /* yacc.c:1646  */
+#line 164 "snazzle.y" /* yacc.c:1646  */
+    { }
+#line 1502 "snazzle.tab.c" /* yacc.c:1646  */
     break;
 
   case 23:
-#line 117 "snazzle.y" /* yacc.c:1646  */
-    { (yyval.val) = (yyvsp[-1].val); fprintf(output, "\n SM expr SM        : ' %s ' "    , (yyvsp[-2].val));}
-#line 1423 "snazzle.tab.c" /* yacc.c:1646  */
+#line 168 "snazzle.y" /* yacc.c:1646  */
+    {(yyval.val) = (yyvsp[0].val);}
+#line 1508 "snazzle.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 24:
+#line 170 "snazzle.y" /* yacc.c:1646  */
+    { fprintf(output, "movl %%ebx, %s\n", (yyvsp[-2].val));}
+#line 1514 "snazzle.tab.c" /* yacc.c:1646  */
     break;
 
   case 25:
-#line 119 "snazzle.y" /* yacc.c:1646  */
-    {  fprintf(output, "movl $%s, %%eax\nmovl $%s, %%ebx\naddl %%eax, %%ebx\n",(yyvsp[-2].val),(yyvsp[0].val)); }
-#line 1429 "snazzle.tab.c" /* yacc.c:1646  */
+#line 173 "snazzle.y" /* yacc.c:1646  */
+    {fprintf(output, "movl $%s, %s\n",(yyvsp[0].val), (yyvsp[-2].val));}
+#line 1520 "snazzle.tab.c" /* yacc.c:1646  */
     break;
 
   case 26:
-#line 120 "snazzle.y" /* yacc.c:1646  */
-    { fprintf(output, "movl $%s, %%eax\nmovl $%s, %%ebx\nsubl %%eax, %%ebx\n",(yyvsp[0].val),(yyvsp[-2].val));}
-#line 1435 "snazzle.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 27:
-#line 121 "snazzle.y" /* yacc.c:1646  */
-    { fprintf(output, "movl $0, %%ebx\nmovl $0, %%edx\nmult_loop_start:\ncmpl $%s, %%edx\nje mult_end_loop\naddl $1, %%edx\naddl $%s, %%ebx\njmp mult_loop_start\nmult_end_loop:\n",(yyvsp[-2].val),(yyvsp[0].val)); /*add final statement to add to variable*/}
-#line 1441 "snazzle.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 28:
-#line 122 "snazzle.y" /* yacc.c:1646  */
-    { fprintf(output, "movl $0, %%ebx\nmovl $%s, %%edx\ndiv_loop_start:\ncmpl $0, %%edx\nje div_end_loop\nsubl $%s, %%edx\naddl $1, %%ebx\njmp div_loop_start\ndiv_end_loop:\n",(yyvsp[-2].val),(yyvsp[0].val)); }
-#line 1447 "snazzle.tab.c" /* yacc.c:1646  */
+#line 176 "snazzle.y" /* yacc.c:1646  */
+    { fprintf(output, "movl %%ebx, %s\n", (yyvsp[-2].val));}
+#line 1526 "snazzle.tab.c" /* yacc.c:1646  */
     break;
 
   case 29:
-#line 123 "snazzle.y" /* yacc.c:1646  */
-    { fprintf(output, "movl $0, %%ebx\nmovl %s, %%edx\ndiv_loop_start:\ncmpl $0, %%edx\nje div_end_loop\nsubl $%s, %%edx\naddl $1, %%ebx\njmp div_loop_start\ndiv_end_loop:\n",(yyvsp[-2].val),(yyvsp[0].val)); }
-#line 1453 "snazzle.tab.c" /* yacc.c:1646  */
+#line 184 "snazzle.y" /* yacc.c:1646  */
+    { }
+#line 1532 "snazzle.tab.c" /* yacc.c:1646  */
     break;
 
   case 30:
-#line 124 "snazzle.y" /* yacc.c:1646  */
-    { fprintf(output, "movl $%s, %%eax\nmovl %s, %%ebx\nsubl %%eax, %%ebx\n",(yyvsp[0].val),(yyvsp[-2].val)); }
-#line 1459 "snazzle.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 31:
-#line 125 "snazzle.y" /* yacc.c:1646  */
-    { fprintf(output, "movl $0, %%ebx\nmovl $0, %%edx\nmult_loop_start:\ncmpl %s, %%edx\nje mult_end_loop\naddl $1, %%edx\naddl $%s, %%ebx\njmp mult_loop_start\nmult_end_loop:\n",(yyvsp[-2].val),(yyvsp[0].val)); }
-#line 1465 "snazzle.tab.c" /* yacc.c:1646  */
+#line 185 "snazzle.y" /* yacc.c:1646  */
+    { }
+#line 1538 "snazzle.tab.c" /* yacc.c:1646  */
     break;
 
   case 32:
-#line 126 "snazzle.y" /* yacc.c:1646  */
-    { fprintf(output, "movl %s, %%eax\nmovl $%s, %%ebx\naddl %%eax, %%ebx\n",(yyvsp[-2].val),(yyvsp[0].val)); }
-#line 1471 "snazzle.tab.c" /* yacc.c:1646  */
+#line 188 "snazzle.y" /* yacc.c:1646  */
+    {fprintf(output, "movl $%s, %%eax\n",(yyvsp[-2].val));
+                            fprintf(output, "movl $%s, %%ebx\n",(yyvsp[0].val));
+                            fprintf(output, "addl %%eax, %%ebx\n"); }
+#line 1546 "snazzle.tab.c" /* yacc.c:1646  */
     break;
 
   case 33:
-#line 127 "snazzle.y" /* yacc.c:1646  */
-    { fprintf(output, "movl $0, %%ebx\nmovl %s, %%edx\ndiv_loop_start:\ncmpl $0, %%edx\nje div_end_loop\nsubl %s, %%edx\naddl $1, %%ebx\njmp div_loop_start\ndiv_end_loop:\n",(yyvsp[-2].val),(yyvsp[0].val)); }
-#line 1477 "snazzle.tab.c" /* yacc.c:1646  */
+#line 193 "snazzle.y" /* yacc.c:1646  */
+    {fprintf(output, "movl $%s, %%eax\n",(yyvsp[0].val));
+                            fprintf(output, "movl $%s, %%ebx\n",(yyvsp[-2].val));
+                            fprintf(output, "subl %%eax, %%ebx\n");}
+#line 1554 "snazzle.tab.c" /* yacc.c:1646  */
     break;
 
   case 34:
-#line 128 "snazzle.y" /* yacc.c:1646  */
-    { fprintf(output, "movl %s, %%eax\nmovl %s, %%ebx\nsubl %%eax, %%ebx\n",(yyvsp[0].val),(yyvsp[-2].val)); }
-#line 1483 "snazzle.tab.c" /* yacc.c:1646  */
+#line 198 "snazzle.y" /* yacc.c:1646  */
+    {fprintf(output, "movl $%s, %%eax\n",(yyvsp[-2].val));
+                           fprintf(output, "movl $%s, %%ebx\n",(yyvsp[0].val));
+                           fprintf(output, "imull %%eax, %%ebx\n");}
+#line 1562 "snazzle.tab.c" /* yacc.c:1646  */
     break;
 
   case 35:
-#line 129 "snazzle.y" /* yacc.c:1646  */
-    { fprintf(output, "movl $0, %%ebx\nmovl $0, %%edx\nmult_loop_start:\ncmpl %s, %%edx\nje mult_end_loop\naddl $1, %%edx\naddl %s, %%ebx\njmp mult_loop_start\nmult_end_loop:\n",(yyvsp[-2].val),(yyvsp[0].val)); }
-#line 1489 "snazzle.tab.c" /* yacc.c:1646  */
+#line 203 "snazzle.y" /* yacc.c:1646  */
+    {fprintf(output, "movl $%s, %%eax\n",(yyvsp[-2].val));
+                           fprintf(output, "movl $0, %%edx\n");
+                           fprintf(output, "movl $%s, %%ebx\n",(yyvsp[0].val));
+                           fprintf(output, "divl %%ebx\n");
+                           fprintf(output, "movl %%eax, %%ebx\n");}
+#line 1572 "snazzle.tab.c" /* yacc.c:1646  */
     break;
 
   case 36:
-#line 130 "snazzle.y" /* yacc.c:1646  */
-    { fprintf(output, "movl %s, %%eax\nmovl %s, %%ebx\naddl %%eax, %%ebx\n",(yyvsp[-2].val),(yyvsp[0].val)); }
-#line 1495 "snazzle.tab.c" /* yacc.c:1646  */
+#line 210 "snazzle.y" /* yacc.c:1646  */
+    {fprintf(output, "movl %s, %%eax\n",(yyvsp[-2].val));
+                            fprintf(output, "movl $0, %%edx\n");
+                            fprintf(output, "movl $%s, %%ebx\n",(yyvsp[0].val));
+                            fprintf(output, "divl %%ebx\n");
+                            fprintf(output, "movl %%eax, %%ebx\n");}
+#line 1582 "snazzle.tab.c" /* yacc.c:1646  */
     break;
 
   case 37:
-#line 131 "snazzle.y" /* yacc.c:1646  */
-    {(yyval.val) = (yyvsp[0].val);}
-#line 1501 "snazzle.tab.c" /* yacc.c:1646  */
+#line 217 "snazzle.y" /* yacc.c:1646  */
+    {fprintf(output, "movl $%s, %%eax\n",(yyvsp[0].val));
+                            fprintf(output, "movl %s, %%ebx\n",(yyvsp[-2].val));
+                            fprintf(output, "subl %%eax, %%ebx\n");}
+#line 1590 "snazzle.tab.c" /* yacc.c:1646  */
     break;
 
   case 38:
-#line 132 "snazzle.y" /* yacc.c:1646  */
-    {(yyval.val) = (yyvsp[0].val);}
-#line 1507 "snazzle.tab.c" /* yacc.c:1646  */
+#line 222 "snazzle.y" /* yacc.c:1646  */
+    {fprintf(output, "movl %s, %%eax\n",(yyvsp[-2].val));
+                            fprintf(output, "movl $%s, %%ebx\n",(yyvsp[0].val));
+                            fprintf(output, "imull %%eax, %%ebx\n");}
+#line 1598 "snazzle.tab.c" /* yacc.c:1646  */
     break;
 
   case 39:
-#line 133 "snazzle.y" /* yacc.c:1646  */
-    {(yyval.val) = (yyvsp[0].val);}
-#line 1513 "snazzle.tab.c" /* yacc.c:1646  */
+#line 227 "snazzle.y" /* yacc.c:1646  */
+    {fprintf(output, "movl %s, %%eax\n",(yyvsp[-2].val));
+                            fprintf(output, "movl $%s, %%ebx\n",(yyvsp[0].val));
+                            fprintf(output, "addl %%eax, %%ebx\n");}
+#line 1606 "snazzle.tab.c" /* yacc.c:1646  */
     break;
 
   case 40:
-#line 134 "snazzle.y" /* yacc.c:1646  */
-    {(yyval.val) = (yyvsp[0].val);}
-#line 1519 "snazzle.tab.c" /* yacc.c:1646  */
+#line 232 "snazzle.y" /* yacc.c:1646  */
+    {fprintf(output, "movl %s, %%eax\n",(yyvsp[-2].val));
+                            fprintf(output, "movl $0, %%edx\n");
+                            fprintf(output, "movl %s, %%ebx\n",(yyvsp[0].val));
+                            fprintf(output, "divl %%ebx\n");
+                            fprintf(output, "movl %%eax, %%ebx\n");}
+#line 1616 "snazzle.tab.c" /* yacc.c:1646  */
     break;
 
   case 41:
-#line 135 "snazzle.y" /* yacc.c:1646  */
-    {(yyval.val) = (yyvsp[0].val);}
-#line 1525 "snazzle.tab.c" /* yacc.c:1646  */
+#line 239 "snazzle.y" /* yacc.c:1646  */
+    {fprintf(output, "movl %s, %%eax\n",(yyvsp[0].val));
+                            fprintf(output, "movl %s, %%ebx\n",(yyvsp[-2].val));
+                            fprintf(output, "subl %%eax, %%ebx\n");}
+#line 1624 "snazzle.tab.c" /* yacc.c:1646  */
     break;
 
   case 42:
-#line 136 "snazzle.y" /* yacc.c:1646  */
-    {(yyval.val) = (yyvsp[0].val);}
-#line 1531 "snazzle.tab.c" /* yacc.c:1646  */
+#line 244 "snazzle.y" /* yacc.c:1646  */
+    {fprintf(output, "movl %s, %%eax\n",(yyvsp[-2].val));
+                            fprintf(output, "movl %s, %%ebx\n",(yyvsp[0].val));
+                            fprintf(output, "imull %%eax, %%ebx\n");}
+#line 1632 "snazzle.tab.c" /* yacc.c:1646  */
     break;
 
   case 43:
-#line 137 "snazzle.y" /* yacc.c:1646  */
-    {(yyval.val) = (yyvsp[0].val);}
-#line 1537 "snazzle.tab.c" /* yacc.c:1646  */
+#line 249 "snazzle.y" /* yacc.c:1646  */
+    {fprintf(output, "movl %s, %%eax\n",(yyvsp[-2].val));
+                            fprintf(output, "movl %s, %%ebx\n",(yyvsp[0].val));
+                            fprintf(output, "addl %%eax, %%ebx\n"); }
+#line 1640 "snazzle.tab.c" /* yacc.c:1646  */
     break;
 
   case 44:
-#line 138 "snazzle.y" /* yacc.c:1646  */
+#line 252 "snazzle.y" /* yacc.c:1646  */
     {(yyval.val) = (yyvsp[0].val);}
-#line 1543 "snazzle.tab.c" /* yacc.c:1646  */
+#line 1646 "snazzle.tab.c" /* yacc.c:1646  */
     break;
 
   case 45:
-#line 139 "snazzle.y" /* yacc.c:1646  */
+#line 253 "snazzle.y" /* yacc.c:1646  */
     {(yyval.val) = (yyvsp[0].val);}
-#line 1549 "snazzle.tab.c" /* yacc.c:1646  */
+#line 1652 "snazzle.tab.c" /* yacc.c:1646  */
     break;
 
   case 46:
-#line 140 "snazzle.y" /* yacc.c:1646  */
+#line 254 "snazzle.y" /* yacc.c:1646  */
     {(yyval.val) = (yyvsp[0].val);}
-#line 1555 "snazzle.tab.c" /* yacc.c:1646  */
+#line 1658 "snazzle.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 47:
+#line 255 "snazzle.y" /* yacc.c:1646  */
+    {(yyval.val) = (yyvsp[0].val);}
+#line 1664 "snazzle.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 48:
+#line 256 "snazzle.y" /* yacc.c:1646  */
+    {(yyval.val) = (yyvsp[0].val);}
+#line 1670 "snazzle.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 49:
+#line 257 "snazzle.y" /* yacc.c:1646  */
+    {(yyval.val) = (yyvsp[0].val);}
+#line 1676 "snazzle.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 50:
+#line 258 "snazzle.y" /* yacc.c:1646  */
+    {(yyval.val) = (yyvsp[0].val);}
+#line 1682 "snazzle.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 51:
+#line 259 "snazzle.y" /* yacc.c:1646  */
+    {(yyval.val) = (yyvsp[0].val);}
+#line 1688 "snazzle.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 52:
+#line 260 "snazzle.y" /* yacc.c:1646  */
+    {(yyval.val) = (yyvsp[0].val);}
+#line 1694 "snazzle.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 53:
+#line 261 "snazzle.y" /* yacc.c:1646  */
+    {(yyval.val) = (yyvsp[0].val);}
+#line 1700 "snazzle.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 1559 "snazzle.tab.c" /* yacc.c:1646  */
+#line 1704 "snazzle.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1783,7 +1928,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 143 "snazzle.y" /* yacc.c:1906  */
+#line 264 "snazzle.y" /* yacc.c:1906  */
 
 
 
@@ -1802,6 +1947,7 @@ int main(int, char**) {
   // Set Flex to read from it instead of defaulting to STDIN:
   yyin = myfile;
 
+  fprintf(output, ".code32\n");
   fprintf(output, ".section .text\n");
   fprintf(output, ".section .data\n");
   fprintf(output, "a:\n.long 0\n");
@@ -1809,8 +1955,29 @@ int main(int, char**) {
   fprintf(output, "c:\n.long 0\n");
   fprintf(output, "d:\n.long 0\n"); 
   fprintf(output, "e:\n.long 0\n");
-  fprintf(output, "f:\n.long 0\n"); 
+  fprintf(output, "f:\n.long 0\n");
+  fprintf(output, "g:\n.long 0\n"); 
+  fprintf(output, "h:\n.long 0\n");
+  fprintf(output, "i:\n.long 0\n"); 
+  fprintf(output, "j:\n.long 0\n");
+  fprintf(output, "k:\n.long 0\n");
+  fprintf(output, "l:\n.long 0\n"); 
+  fprintf(output, "m:\n.long 0\n");
+  fprintf(output, "n:\n.long 0\n"); 
+  fprintf(output, "o:\n.long 0\n");
+  fprintf(output, "p:\n.long 0\n");
+  fprintf(output, "q:\n.long 0\n"); 
+  fprintf(output, "r:\n.long 0\n");
+  fprintf(output, "s:\n.long 0\n"); 
+  fprintf(output, "t:\n.long 0\n");
+  fprintf(output, "u:\n.long 0\n");
+  fprintf(output, "v:\n.long 0\n"); 
+  fprintf(output, "w:\n.long 0\n");
+  fprintf(output, "x:\n.long 0\n"); 
+  fprintf(output, "y:\n.long 0\n");
 
+  fprintf(output, "z:\n.long 0\n"); 
+  fprintf(output, "space:\n.ascii \" \"\n");
   fprintf(output, ".globl _start\n");
   fprintf(output, "_start:\n"); 
   
@@ -1818,6 +1985,459 @@ int main(int, char**) {
   // Parse through the input:
   yyparse();
 
+ //ending code to add each digit to a stack and print each variabl
+  fprintf(output, "movl z, %%eax\n");
+  fprintf(output, "xorl %%esi, %%esi\n");
+    
+  fprintf(output, "printz:\n");
+  fprintf(output, "movl $0, %%edx\n");
+  fprintf(output, "movl $10, %%ebx\n");
+  fprintf(output, "divl %%ebx\n");
+  fprintf(output, "addl $48, %%edx\n");
+  fprintf(output, "pushl %%edx\n");
+  fprintf(output, "incl %%esi\n");
+  fprintf(output, "cmpl $0, %%eax\n");
+  fprintf(output, "jz movey\n");
+  fprintf(output, "jmp printz\n");
+
+  fprintf(output, "movey:\n");
+  fprintf(output, "movl y, %%eax\n");
+  fprintf(output, "pushl space\n");
+  fprintf(output, "incl %%esi\n");  
+  fprintf(output, "jmp printy\n");
+
+  fprintf(output, "printy:\n");
+  fprintf(output, "movl $0, %%edx\n");
+  fprintf(output, "movl $10, %%ebx\n");
+  fprintf(output, "divl %%ebx\n");
+  fprintf(output, "addl $48, %%edx\n");
+  fprintf(output, "pushl %%edx\n");
+  fprintf(output, "incl %%esi\n");
+  fprintf(output, "cmpl $0, %%eax\n");
+  fprintf(output, "jz movex\n");
+  fprintf(output, "jmp printy\n");
+
+  fprintf(output, "movex:\n");
+  fprintf(output, "movl x, %%eax\n");
+  fprintf(output, "pushl space\n");
+  fprintf(output, "incl %%esi\n");
+  fprintf(output, "jmp printx\n");
+
+  fprintf(output, "printx:\n");
+  fprintf(output, "movl $0, %%edx\n");
+  fprintf(output, "movl $10, %%ebx\n");
+  fprintf(output, "divl %%ebx\n");
+  fprintf(output, "addl $48, %%edx\n");
+  fprintf(output, "pushl %%edx\n");
+  fprintf(output, "incl %%esi\n");
+  fprintf(output, "cmpl $0, %%eax\n");
+  fprintf(output, "jz movew\n");
+  fprintf(output, "jmp printx\n");
+
+  fprintf(output, "movew:\n");
+  fprintf(output, "movl w, %%eax\n");
+  fprintf(output, "pushl space\n");
+  fprintf(output, "incl %%esi\n");
+  fprintf(output, "jmp printw\n");
+
+  fprintf(output, "printw:\n");
+  fprintf(output, "movl $0, %%edx\n");
+  fprintf(output, "movl $10, %%ebx\n");
+  fprintf(output, "divl %%ebx\n");
+  fprintf(output, "addl $48, %%edx\n");
+  fprintf(output, "pushl %%edx\n");
+  fprintf(output, "incl %%esi\n");
+  fprintf(output, "cmpl $0, %%eax\n");
+  fprintf(output, "jz movev\n");
+  fprintf(output, "jmp printw\n");
+
+  fprintf(output, "movev:\n");
+  fprintf(output, "movl v, %%eax\n");
+  fprintf(output, "pushl space\n");
+  fprintf(output, "incl %%esi\n");
+  fprintf(output, "jmp printv\n");
+
+  fprintf(output, "printv:\n");
+  fprintf(output, "movl $0, %%edx\n");
+  fprintf(output, "movl $10, %%ebx\n");
+  fprintf(output, "divl %%ebx\n");
+  fprintf(output, "addl $48, %%edx\n");
+  fprintf(output, "pushl %%edx\n");
+  fprintf(output, "incl %%esi\n");
+  fprintf(output, "cmpl $0, %%eax\n");
+  fprintf(output, "jz moveu\n");
+  fprintf(output, "jmp printv\n");
+
+  fprintf(output, "moveu:\n");
+  fprintf(output, "movl u, %%eax\n");
+  fprintf(output, "pushl space\n");
+  fprintf(output, "incl %%esi\n");
+  fprintf(output, "jmp printu\n");
+
+  fprintf(output, "printu:\n");
+  fprintf(output, "movl $0, %%edx\n");
+  fprintf(output, "movl $10, %%ebx\n");
+  fprintf(output, "divl %%ebx\n");
+  fprintf(output, "addl $48, %%edx\n");
+  fprintf(output, "pushl %%edx\n");
+  fprintf(output, "incl %%esi\n");
+  fprintf(output, "cmpl $0, %%eax\n");
+  fprintf(output, "jz movet\n");
+  fprintf(output, "jmp printu\n");
+
+  fprintf(output, "movet:\n");
+  fprintf(output, "movl t, %%eax\n");
+  fprintf(output, "pushl space\n");
+  fprintf(output, "incl %%esi\n");  
+  fprintf(output, "jmp printt\n");
+
+  fprintf(output, "printt:\n");
+  fprintf(output, "movl $0, %%edx\n");
+  fprintf(output, "movl $10, %%ebx\n");
+  fprintf(output, "divl %%ebx\n");
+  fprintf(output, "addl $48, %%edx\n");
+  fprintf(output, "pushl %%edx\n");
+  fprintf(output, "incl %%esi\n");
+  fprintf(output, "cmpl $0, %%eax\n");
+  fprintf(output, "jz moves\n");
+  fprintf(output, "jmp printt\n");
+
+  fprintf(output, "moves:\n");
+  fprintf(output, "movl s, %%eax\n");
+  fprintf(output, "pushl space\n");
+  fprintf(output, "incl %%esi\n");  
+  fprintf(output, "jmp prints\n");
+
+  fprintf(output, "prints:\n");
+  fprintf(output, "movl $0, %%edx\n");
+  fprintf(output, "movl $10, %%ebx\n");
+  fprintf(output, "divl %%ebx\n");
+  fprintf(output, "addl $48, %%edx\n");
+  fprintf(output, "pushl %%edx\n");
+  fprintf(output, "incl %%esi\n");
+  fprintf(output, "cmpl $0, %%eax\n");
+  fprintf(output, "jz mover\n");
+  fprintf(output, "jmp prints\n");
+
+  fprintf(output, "mover:\n");
+  fprintf(output, "movl r, %%eax\n");
+  fprintf(output, "pushl space\n");
+  fprintf(output, "incl %%esi\n");
+  fprintf(output, "jmp printr\n");
+
+  fprintf(output, "printr:\n");
+  fprintf(output, "movl $0, %%edx\n");
+  fprintf(output, "movl $10, %%ebx\n");
+  fprintf(output, "divl %%ebx\n");
+  fprintf(output, "addl $48, %%edx\n");
+  fprintf(output, "pushl %%edx\n");
+  fprintf(output, "incl %%esi\n");
+  fprintf(output, "cmpl $0, %%eax\n");
+  fprintf(output, "jz moveq\n");
+  fprintf(output, "jmp printr\n");
+
+  fprintf(output, "moveq:\n");
+  fprintf(output, "movl q, %%eax\n");
+  fprintf(output, "pushl space\n");
+  fprintf(output, "incl %%esi\n");
+  fprintf(output, "jmp printq\n");
+
+  fprintf(output, "printq:\n");
+  fprintf(output, "movl $0, %%edx\n");
+  fprintf(output, "movl $10, %%ebx\n");
+  fprintf(output, "divl %%ebx\n");
+  fprintf(output, "addl $48, %%edx\n");
+  fprintf(output, "pushl %%edx\n");
+  fprintf(output, "incl %%esi\n");
+  fprintf(output, "cmpl $0, %%eax\n");
+  fprintf(output, "jz movep\n");
+  fprintf(output, "jmp printq\n");
+
+  fprintf(output, "movep:\n");
+  fprintf(output, "movl p, %%eax\n");
+  fprintf(output, "pushl space\n");
+  fprintf(output, "incl %%esi\n");
+  fprintf(output, "jmp printp\n");
+
+  fprintf(output, "printp:\n");
+  fprintf(output, "movl $0, %%edx\n");
+  fprintf(output, "movl $10, %%ebx\n");
+  fprintf(output, "divl %%ebx\n");
+  fprintf(output, "addl $48, %%edx\n");
+  fprintf(output, "pushl %%edx\n");
+  fprintf(output, "incl %%esi\n");
+  fprintf(output, "cmpl $0, %%eax\n");
+  fprintf(output, "jz moveo\n");
+  fprintf(output, "jmp printp\n");
+
+  fprintf(output, "moveo:\n");
+  fprintf(output, "movl o, %%eax\n");
+  fprintf(output, "pushl space\n");
+  fprintf(output, "incl %%esi\n");
+  fprintf(output, "jmp printo\n");
+
+  fprintf(output, "printo:\n");
+  fprintf(output, "movl $0, %%edx\n");
+  fprintf(output, "movl $10, %%ebx\n");
+  fprintf(output, "divl %%ebx\n");
+  fprintf(output, "addl $48, %%edx\n");
+  fprintf(output, "pushl %%edx\n");
+  fprintf(output, "incl %%esi\n");
+  fprintf(output, "cmpl $0, %%eax\n");
+  fprintf(output, "jz moven\n");
+  fprintf(output, "jmp printo\n");
+
+  fprintf(output, "moven:\n");
+  fprintf(output, "movl n, %%eax\n");
+  fprintf(output, "pushl space\n");
+  fprintf(output, "incl %%esi\n");
+  fprintf(output, "jmp printn\n");
+
+  fprintf(output, "printn:\n");
+  fprintf(output, "movl $0, %%edx\n");
+  fprintf(output, "movl $10, %%ebx\n");
+  fprintf(output, "divl %%ebx\n");
+  fprintf(output, "addl $48, %%edx\n");
+  fprintf(output, "pushl %%edx\n");
+  fprintf(output, "incl %%esi\n");
+  fprintf(output, "cmpl $0, %%eax\n");
+  fprintf(output, "jz movem\n");
+  fprintf(output, "jmp printn\n");
+
+  fprintf(output, "movem:\n");
+  fprintf(output, "movl m, %%eax\n");
+  fprintf(output, "pushl space\n");
+  fprintf(output, "incl %%esi\n");
+  fprintf(output, "jmp printm\n");
+
+  fprintf(output, "printm:\n");
+  fprintf(output, "movl $0, %%edx\n");
+  fprintf(output, "movl $10, %%ebx\n");
+  fprintf(output, "divl %%ebx\n");
+  fprintf(output, "addl $48, %%edx\n");
+  fprintf(output, "pushl %%edx\n");
+  fprintf(output, "incl %%esi\n");
+  fprintf(output, "cmpl $0, %%eax\n");
+  fprintf(output, "jz movel\n");
+  fprintf(output, "jmp printm\n");
+
+  fprintf(output, "movel:\n");
+  fprintf(output, "movl l, %%eax\n");
+  fprintf(output, "pushl space\n");
+  fprintf(output, "incl %%esi\n");
+  fprintf(output, "jmp printl\n");
+
+  fprintf(output, "printl:\n");
+  fprintf(output, "movl $0, %%edx\n");
+  fprintf(output, "movl $10, %%ebx\n");
+  fprintf(output, "divl %%ebx\n");
+  fprintf(output, "addl $48, %%edx\n");
+  fprintf(output, "pushl %%edx\n");
+  fprintf(output, "incl %%esi\n");
+  fprintf(output, "cmpl $0, %%eax\n");
+  fprintf(output, "jz movek\n");
+  fprintf(output, "jmp printl\n");
+
+  fprintf(output, "movek:\n");
+  fprintf(output, "movl k, %%eax\n");
+  fprintf(output, "pushl space\n");
+  fprintf(output, "incl %%esi\n");
+  fprintf(output, "jmp printk\n");
+
+  fprintf(output, "printk:\n");
+  fprintf(output, "movl $0, %%edx\n");
+  fprintf(output, "movl $10, %%ebx\n");
+  fprintf(output, "divl %%ebx\n");
+  fprintf(output, "addl $48, %%edx\n");
+  fprintf(output, "pushl %%edx\n");
+  fprintf(output, "incl %%esi\n");
+  fprintf(output, "cmpl $0, %%eax\n");
+  fprintf(output, "jz movej\n");
+  fprintf(output, "jmp printk\n");
+
+  fprintf(output, "movej:\n");
+  fprintf(output, "movl j, %%eax\n");
+  fprintf(output, "pushl space\n");
+  fprintf(output, "incl %%esi\n");
+  fprintf(output, "jmp printj\n");
+
+  fprintf(output, "printj:\n");
+  fprintf(output, "movl $0, %%edx\n");
+  fprintf(output, "movl $10, %%ebx\n");
+  fprintf(output, "divl %%ebx\n");
+  fprintf(output, "addl $48, %%edx\n");
+  fprintf(output, "pushl %%edx\n");
+  fprintf(output, "incl %%esi\n");
+  fprintf(output, "cmpl $0, %%eax\n");
+  fprintf(output, "jz movei\n");
+  fprintf(output, "jmp printj\n");
+
+  fprintf(output, "movei:\n");
+  fprintf(output, "movl i, %%eax\n");
+  fprintf(output, "pushl space\n");
+  fprintf(output, "incl %%esi\n");
+  fprintf(output, "jmp printi\n");
+
+  fprintf(output, "printi:\n");
+  fprintf(output, "movl $0, %%edx\n");
+  fprintf(output, "movl $10, %%ebx\n");
+  fprintf(output, "divl %%ebx\n");
+  fprintf(output, "addl $48, %%edx\n");
+  fprintf(output, "pushl %%edx\n");
+  fprintf(output, "incl %%esi\n");
+  fprintf(output, "cmpl $0, %%eax\n");
+  fprintf(output, "jz moveh\n");
+  fprintf(output, "jmp printi\n");
+
+  fprintf(output, "moveh:\n");
+  fprintf(output, "movl h, %%eax\n");
+  fprintf(output, "pushl space\n");
+  fprintf(output, "incl %%esi\n");
+  fprintf(output, "jmp printh\n");
+
+  fprintf(output, "printh:\n");
+  fprintf(output, "movl $0, %%edx\n");
+  fprintf(output, "movl $10, %%ebx\n");
+  fprintf(output, "divl %%ebx\n");
+  fprintf(output, "addl $48, %%edx\n");
+  fprintf(output, "pushl %%edx\n");
+  fprintf(output, "incl %%esi\n");
+  fprintf(output, "cmpl $0, %%eax\n");
+  fprintf(output, "jz moveg\n");
+  fprintf(output, "jmp printh\n");
+
+  fprintf(output, "moveg:\n");
+  fprintf(output, "movl g, %%eax\n");
+  fprintf(output, "pushl space\n");
+  fprintf(output, "incl %%esi\n");
+  fprintf(output, "jmp printg\n");
+
+  fprintf(output, "printg:\n");
+  fprintf(output, "movl $0, %%edx\n");
+  fprintf(output, "movl $10, %%ebx\n");
+  fprintf(output, "divl %%ebx\n");
+  fprintf(output, "addl $48, %%edx\n");
+  fprintf(output, "pushl %%edx\n");
+  fprintf(output, "incl %%esi\n");
+  fprintf(output, "cmpl $0, %%eax\n");
+  fprintf(output, "jz movef\n");
+  fprintf(output, "jmp printg\n");
+
+  fprintf(output, "movef:\n");
+  fprintf(output, "movl f, %%eax\n");
+  fprintf(output, "pushl space\n");
+  fprintf(output, "incl %%esi\n");
+  fprintf(output, "jmp printf\n");
+
+  fprintf(output, "printf:\n");
+  fprintf(output, "movl $0, %%edx\n");
+  fprintf(output, "movl $10, %%ebx\n");
+  fprintf(output, "divl %%ebx\n");
+  fprintf(output, "addl $48, %%edx\n");
+  fprintf(output, "pushl %%edx\n");
+  fprintf(output, "incl %%esi\n");
+  fprintf(output, "cmpl $0, %%eax\n");
+  fprintf(output, "jz movee\n");
+  fprintf(output, "jmp printf\n");
+
+  fprintf(output, "movee:\n");
+  fprintf(output, "movl e, %%eax\n");
+  fprintf(output, "pushl space\n");
+  fprintf(output, "incl %%esi\n");
+  fprintf(output, "jmp printe\n");
+
+  fprintf(output, "printe:\n");
+  fprintf(output, "movl $0, %%edx\n");
+  fprintf(output, "movl $10, %%ebx\n");
+  fprintf(output, "divl %%ebx\n");
+  fprintf(output, "addl $48, %%edx\n");
+  fprintf(output, "pushl %%edx\n");
+  fprintf(output, "incl %%esi\n");
+  fprintf(output, "cmpl $0, %%eax\n");
+  fprintf(output, "jz moved\n");
+  fprintf(output, "jmp printe\n");
+
+  fprintf(output, "moved:\n");
+  fprintf(output, "movl d, %%eax\n");
+  fprintf(output, "pushl space\n");
+  fprintf(output, "incl %%esi\n");
+  fprintf(output, "jmp printd\n");
+
+  fprintf(output, "printd:\n");
+  fprintf(output, "movl $0, %%edx\n");
+  fprintf(output, "movl $10, %%ebx\n");
+  fprintf(output, "divl %%ebx\n");
+  fprintf(output, "addl $48, %%edx\n");
+  fprintf(output, "pushl %%edx\n");
+  fprintf(output, "incl %%esi\n");
+  fprintf(output, "cmpl $0, %%eax\n");
+  fprintf(output, "jz movec\n");
+  fprintf(output, "jmp printd\n");
+
+  fprintf(output, "movec:\n");
+  fprintf(output, "movl c, %%eax\n");
+  fprintf(output, "pushl space\n");
+  fprintf(output, "incl %%esi\n");
+  fprintf(output, "jmp printc\n");
+
+  fprintf(output, "printc:\n");
+  fprintf(output, "movl $0, %%edx\n");
+  fprintf(output, "movl $10, %%ebx\n");
+  fprintf(output, "divl %%ebx\n");
+  fprintf(output, "addl $48, %%edx\n");
+  fprintf(output, "pushl %%edx\n");
+  fprintf(output, "incl %%esi\n");
+  fprintf(output, "cmpl $0, %%eax\n");
+  fprintf(output, "jz moveb\n");
+  fprintf(output, "jmp printc\n");
+
+  fprintf(output, "moveb:\n");
+  fprintf(output, "movl b, %%eax\n");
+  fprintf(output, "pushl space\n");
+  fprintf(output, "incl %%esi\n");
+  fprintf(output, "jmp printb\n");
+
+  fprintf(output, "printb:\n");
+  fprintf(output, "movl $0, %%edx\n");
+  fprintf(output, "movl $10, %%ebx\n");
+  fprintf(output, "divl %%ebx\n");
+  fprintf(output, "addl $48, %%edx\n");
+  fprintf(output, "pushl %%edx\n");
+  fprintf(output, "incl %%esi\n");
+  fprintf(output, "cmpl $0, %%eax\n");
+  fprintf(output, "jz movea\n");
+  fprintf(output, "jmp printb\n");
+
+  fprintf(output, "movea:\n");
+  fprintf(output, "movl a, %%eax\n");
+  fprintf(output, "pushl space\n");
+  fprintf(output, "incl %%esi\n");
+  fprintf(output, "jmp printa\n");
+
+  fprintf(output, "printa:\n");
+  fprintf(output, "movl $0, %%edx\n");
+  fprintf(output, "movl $10, %%ebx\n");
+  fprintf(output, "divl %%ebx\n");
+  fprintf(output, "addl $48, %%edx\n");
+  fprintf(output, "pushl %%edx\n");
+  fprintf(output, "incl %%esi\n");
+  fprintf(output, "cmpl $0, %%eax\n");
+  fprintf(output, "jz next\n");
+  fprintf(output, "jmp printa\n");
+
+  fprintf(output, "next:\n");
+  fprintf(output, "cmpl $0, %%esi\n");
+  fprintf(output, "jz exit\n");
+  fprintf(output, "decl %%esi\n");
+  fprintf(output, "movl $4, %%eax\n");
+  fprintf(output, "movl %%esp, %%ecx\n");
+  fprintf(output, "movl $1, %%ebx\n");
+  fprintf(output, "movl $1, %%edx\n");
+  fprintf(output, "int $0x80\n");
+  fprintf(output, "addl $4, %%esp\n");
+  fprintf(output, "jmp next\n");
+
+  fprintf(output, "exit:\n");
   fprintf(output, "movl $1, %%eax\n");
   fprintf(output, "int $0x80\n"); 
 

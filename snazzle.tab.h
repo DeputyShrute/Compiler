@@ -48,29 +48,33 @@ extern int yydebug;
     MAIN = 258,
     FUNCTION = 259,
     LOOP = 260,
-    EQ = 261,
-    GT = 262,
-    LT = 263,
-    GT_EQ = 264,
-    LT_EQ = 265,
-    VAR_DECLARATION = 266,
-    IDENTIFIER = 267,
-    INCREMENT = 268,
-    DECREMENT = 269,
-    OPEN_ROUND = 270,
-    CLOSE_ROUND = 271,
-    OPEN_CURLY = 272,
-    CLOSE_CURLY = 273,
-    SPEECH_MARK = 274,
-    ASSIGNMENT = 275,
-    INTEGER = 276,
-    STRING = 277,
-    PLUS = 278,
-    MINUS = 279,
-    DIVIDE = 280,
-    TIMES = 281,
-    ENDFOR = 282,
-    SEMI_COLON = 283
+    ENDFOR = 261,
+    ENDNESTFOR = 262,
+    IF = 263,
+    ENDIF = 264,
+    ELSE = 265,
+    EQ = 266,
+    GT = 267,
+    LT = 268,
+    GT_EQ = 269,
+    LT_EQ = 270,
+    VAR_DECLARATION = 271,
+    IDENTIFIER = 272,
+    INCREMENT = 273,
+    DECREMENT = 274,
+    OPEN_ROUND = 275,
+    CLOSE_ROUND = 276,
+    OPEN_CURLY = 277,
+    CLOSE_CURLY = 278,
+    SPEECH_MARK = 279,
+    ASSIGNMENT = 280,
+    INTEGER = 281,
+    STRING = 282,
+    PLUS = 283,
+    MINUS = 284,
+    DIVIDE = 285,
+    TIMES = 286,
+    SEMI_COLON = 287
   };
 #endif
 
@@ -79,14 +83,14 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 19 "snazzle.y" /* yacc.c:1909  */
+#line 23 "snazzle.y" /* yacc.c:1909  */
 
   char* val;
   int integer;
 
 
 
-#line 90 "snazzle.tab.h" /* yacc.c:1909  */
+#line 94 "snazzle.tab.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;

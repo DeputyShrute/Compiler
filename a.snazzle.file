@@ -1,8 +1,16 @@
 main
+{	
+if(a < 4)
 {
-	var b := 0;
-	var c := 2;
-	 b := 1 + 1;
-	
 
+}ELSE
+{
+}ENDIF;
+if(a < 4)
+{
+
+}ELSE
+{
+}ENDIF;
 }
+
