@@ -1,5 +1,0 @@
-int x = 2;
-for(int i =0, i<4,i++)
-x=x+2,
-x=x-1,
-end_for
