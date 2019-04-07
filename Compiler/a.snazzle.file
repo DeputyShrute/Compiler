@@ -1,0 +1,16 @@
+main
+{	
+if(a < 4)
+{
+
+}ELSE
+{
+}ENDIF;
+if(a < 4)
+{
+
+}ELSE
+{
+}ENDIF;
+}
+
