@@ -16,7 +16,8 @@
   void yyerror(const char *s);
   int loop = 0;
   int if_ = 0;
- 
+  int functionIndex = 0;
+  int functionRetIndex = 0;
 %}
 
 
@@ -38,6 +39,7 @@
 
 %token <val> IF
 %token <val> ENDIF
+%token <val> ELSEIF
 %token <val> ELSE
  
 %token <val> EQ
@@ -66,6 +68,14 @@
 %token <val> DIVIDE
 %token <val> TIMES
 %token <val> SEMI_COLON
+%token <val> PROCEDURE
+%token <val> ENDFUNCTION
+%token<val> ENDPROJECT
+%token<val> RET
+%token<val> RETMAIN
+%token<val> NAMESPACE
+%token<val> CALLFUNCTION
+%token<val> NAME
 
 %left TIMES DIVIDE
 %left PLUS MINUS
@@ -85,12 +95,18 @@
 
                         /*end of for loop*/
 stmt:                   compound_stmt CLOSE_CURLY
+
                         | compound_stmt CLOSE_CURLY ENDFOR SEMI_COLON     
                             {fprintf(output, "popl %%ecx\n");
                             fprintf(output, "addl $1, %%ecx\n");
                             fprintf(output, "jmp loop_start_%d\n",loop);
-                            fprintf(output, "end_loop_%d:\n", loop );loop--;}
+                            fprintf(output, "end_loop_%d:\n", loop );}
 
+                        | compound_stmt CLOSE_CURLY ENDNESTFOR SEMI_COLON     
+                            {fprintf(output, "popl %%ecx\n");
+                            fprintf(output, "addl $1, %%ecx\n");
+                            fprintf(output, "jmp loop_start_%d\n",loop);
+                            fprintf(output, "end_loop_%d:\n", loop );loop--;}
                         /*for loops*/
                         | LOOP OPEN_ROUND VAR_DECLARATION IDENTIFIER ASSIGNMENT INTEGER SEMI_COLON expr SEMI_COLON INCREMENT SEMI_COLON CLOSE_ROUND    
                             {loop++;fprintf(output, "movl $%s, %%ecx\n", $6);
@@ -100,19 +116,19 @@ stmt:                   compound_stmt CLOSE_CURLY
                             fprintf(output, "pushl %%ecx\n");}
 
                         | LOOP OPEN_ROUND VAR_DECLARATION IDENTIFIER ASSIGNMENT INTEGER SEMI_COLON expr SEMI_COLON DECREMENT SEMI_COLON CLOSE_ROUND 
-                            {loop++; fprintf(output, "movl $%s, %%ecx\n", $6);
+                            {loop++;fprintf(output, "movl $%s, %%ecx\n", $6);
                             fprintf(output, "loop_start_%d:\n", loop);
                             fprintf(output, "subl $1, %%ecx\n");
                             fprintf(output, "cmpl $%s, %%ecx\n", $8);
                             fprintf(output, "je end_loop_%d\n", loop);
-                            fprintf(output, "pushl %%ecx\n");}
+                            fprintf(output, "pushl %%ecx\n"); }
 
                         /*If statements*/
                         | IF OPEN_ROUND IDENTIFIER LT expr CLOSE_ROUND 
                             {fprintf(output,"cmpl $%s, %s\n",$5,$3 );
                             fprintf(output, "jl if%d\n",if_);
                             fprintf(output, "jmp else%d\n",if_);
-                            fprintf(output, "if%d:\n",if_);if_++;} 
+                            fprintf(output, "if%d:\n",if_);if_++;}
 
                         | IF OPEN_ROUND IDENTIFIER GT expr CLOSE_ROUND 
                             {fprintf(output,"cmpl $%s, %s\n",$5,$3);
@@ -145,11 +161,60 @@ stmt:                   compound_stmt CLOSE_CURLY
                         | compound_stmt CLOSE_CURLY ENDIF SEMI_COLON
                              {if_--;fprintf(output,"end%d:\n",if_);if_++;}
 
-                        | MAIN stmt
+                        | ELSEIF OPEN_ROUND IDENTIFIER LT expr CLOSE_ROUND
+                            {if_ --;fprintf(output,"cmpl $%s, %s\n",$5,$3 );
+                            fprintf(output, "jl else%d\n",if_);
+                            fprintf(output, "jmp end%d\n",if_);
+                            fprintf(output, "else%d:\n",if_);if_++;}
+
+                        | ELSEIF OPEN_ROUND IDENTIFIER GT expr CLOSE_ROUND
+                            {if_--; fprintf(output,"cmpl $%s, %s\n",$5,$3);
+                            fprintf(output, "jg else%d\n",if_);
+                            fprintf(output, "jmp end%d\n",if_);
+                            fprintf(output, "else%d:\n",if_);if_++;} 
+
+                        | ELSEIF OPEN_ROUND IDENTIFIER EQ expr CLOSE_ROUND
+                            {if_--;fprintf(output,"cmpl $%s, %s\n",$5,$3);
+                            fprintf(output, "je else%d\n",if_);
+                            fprintf(output, "jmp end%d\n",if_);
+                            fprintf(output, "else%d:\n",if_);if_++;}
+
+                        | ELSEIF OPEN_ROUND IDENTIFIER LT_EQ expr CLOSE_ROUND
+                            {if_--; fprintf(output,"cmpl $%s, %s\n",$5,$3 );
+                            fprintf(output, "jle else%d\n",if_);
+                            fprintf(output, "jmp end%d\n",if_);
+                            fprintf(output, "else%d:\n",if_);if_++;} 
+
+                        | ELSEIF OPEN_ROUND IDENTIFIER GT_EQ expr CLOSE_ROUND
+                            {if_--;fprintf(output,"cmpl $%s, %s\n",$5,$3);
+                            fprintf(output, "jge else%d\n",if_);
+                            fprintf(output, "jmp end%d\n",if_);
+                            fprintf(output, "else%d:\n",if_);if_++;} 
+
+                        | MAIN 
+                       
+
+                        | NAMESPACE stmt
+
+                        | CALLFUNCTION IDENTIFIER SEMI_COLON
+                        {fprintf(output, "jmp %s\n", $2);}
+                        {fprintf(output, "cont%d:\n", functionIndex); functionIndex++;}
+                        | PROCEDURE IDENTIFIER
+                           {fprintf(output, "%s:\n", $2); functionIndex++;}
+
+                        | compound_stmt CLOSE_CURLY ENDPROJECT SEMI_COLON 
+
+                        | RET 
+                        {fprintf (output, "jmp cont%d\n",functionRetIndex); functionRetIndex++;}
+
+                        | RETMAIN 
+                        {fprintf(output, "jmp end\n");}
+
                         | variable_definition SEMI_COLON
                         | function_type SEMI_COLON
                         | expr SEMI_COLON
-                        | SEMI_COLON                                                   
+                        | SEMI_COLON   
+                                                               
                         ;
 
 
@@ -270,10 +335,10 @@ int main(int, char**) {
   #endif
 
   // Open a file handle to a particular file:
-  FILE *myfile = fopen("a.snazzle.file", "r");
+  FILE *myfile = fopen("a.2b", "r");
   // Make sure it is valid:
   if (!myfile) {
-    cout << "I can't open a.snazzle.file!" << endl;
+    cout << "Unable to open file" << endl;
     return -1;
   }
   // Set Flex to read from it instead of defaulting to STDIN:
@@ -318,6 +383,10 @@ int main(int, char**) {
   yyparse();
 
  //ending code to add each digit to a stack and print each variabl
+
+
+{fprintf(output, "end:\n");}
+
   fprintf(output, "movl z, %%eax\n");
   fprintf(output, "xorl %%esi, %%esi\n");
     

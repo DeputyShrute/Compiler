@@ -57,20 +57,62 @@ space:
 .ascii " "
 .globl _start
 _start:
-cmpl $4, a 
-jl if0
-jmp else0
-if0:
-jmp end0
-else0:
-end0:
-cmpl $4, a 
-jl if1
-jmp else1
-if1:
-jmp end1
-else1:
-end1:
+movl $1,  a
+movl $1,  c
+movl $0,  d
+movl $0, %ecx
+loop_start_1:
+cmpl $100000, %ecx
+je end_loop_1
+pushl %ecx
+movl  c , %eax
+movl $0, %edx
+movl  a, %ebx
+divl %ebx
+movl %eax, %ebx
+movl %ebx, b 
+movl  a , %eax
+movl $4, %ebx
+addl %eax, %ebx
+movl %ebx, a 
+movl  d , %eax
+movl  b, %ebx
+addl %eax, %ebx
+movl %ebx, d 
+popl %ecx
+addl $1, %ecx
+jmp loop_start_1
+end_loop_1:
+movl $3,  a
+movl $0, %ecx
+loop_start_2:
+cmpl $100000, %ecx
+je end_loop_2
+pushl %ecx
+movl  c , %eax
+movl $0, %edx
+movl  a, %ebx
+divl %ebx
+movl %eax, %ebx
+movl %ebx, b 
+movl  a , %eax
+movl $4, %ebx
+addl %eax, %ebx
+movl %ebx, a 
+movl  b, %eax
+movl  d , %ebx
+subl %eax, %ebx
+movl %ebx, d
+popl %ecx
+addl $1, %ecx
+jmp loop_start_2
+end_loop_2:
+movl d, %eax
+movl $4, %ebx
+imull %eax, %ebx
+movl %ebx, d
+jmp end
+end:
 movl z, %eax
 xorl %esi, %esi
 printz:

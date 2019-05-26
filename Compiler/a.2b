@@ -1,0 +1,32 @@
+project snazzle 
+
+{ 
+
+main 
+
+{ 
+
+	var a:=1;
+	var c:= 1;
+	var d:= 0;
+	for(var i := 0; i<100000; ++;)
+	{
+		b := c / a;
+		a := a + 4;
+		d := d + b;
+		
+	}ENDFOR;
+	var a:=3;
+	for(var i := 0; i<100000; ++;)
+	{
+		b := c / a;
+		a := a + 4;
+		d:= d - b;
+		
+	}ENDFOR;
+
+d:=d*4;
+
+endMain 
+} 
+}ENDPROJECT; 
